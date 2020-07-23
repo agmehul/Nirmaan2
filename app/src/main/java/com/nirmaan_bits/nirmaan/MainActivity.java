@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
     public static ViewPager viewPager;
     public  static int visits =0 ,total = 1,if_pl;
-    public static  String project = "loading..";
+    public static  String project = "Guest";
 
 
 
