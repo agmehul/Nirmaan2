@@ -34,17 +34,17 @@ public class contact_activity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions<Contact> options= new FirebaseRecyclerOptions.Builder<Contact>()
-                .setQuery(databaseReference,Contact.class)
+        FirebaseRecyclerOptions<contact_members> options= new FirebaseRecyclerOptions.Builder<contact_members>()
+                .setQuery(databaseReference,contact_members.class)
                 .build();
 
-        FirebaseRecyclerAdapter<Contact, contact_activity.ContactViewHolder> adapter=
-                new FirebaseRecyclerAdapter<Contact, ContactViewHolder>(options) {
+        FirebaseRecyclerAdapter<contact_members, contact_activity.ContactViewHolder> adapter=
+                new FirebaseRecyclerAdapter<contact_members, ContactViewHolder>(options) {
 
 
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
-                    protected void onBindViewHolder(@NonNull final ContactViewHolder holder, int position, @NonNull Contact model) {
+                    protected void onBindViewHolder(@NonNull final ContactViewHolder holder, int position, @NonNull  contact_members model) {
 
 
 

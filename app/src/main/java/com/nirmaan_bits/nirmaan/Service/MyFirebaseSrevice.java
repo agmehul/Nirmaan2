@@ -61,7 +61,7 @@ String body = data.get("body");
         notificatonBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.logo)
+                .setSmallIcon(R.drawable.ic_star_black_24dp)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentInfo("Info");
@@ -91,7 +91,7 @@ String body = data.get("body");
         notificatonBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.logo)
+                .setSmallIcon(R.drawable.ic_star_black_24dp)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentInfo("Info");

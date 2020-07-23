@@ -15,11 +15,56 @@
       },
       "oauth_client": [
         {
-          "client_id": "767599280120-h1t3v0eja35spnmaceuejd5f0jf2qcd8.apps.googleusercontent.com",
+          "client_id": "767599280120-gg7p4rk95r1kgbc9dpmc4fs9sbiddnvb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.nirmaan_bits.nirmaan",
-            "certificate_hash": "86735a3ec653017a52dfc0b1a2f08d2c23c4e6c4"
+            "certificate_hash": "1a5a44ce41c8070c8911ccc328fcb8be735a3627"
+          }
+        },
+        {
+          "client_id": "767599280120-sr09lrbp1089352vugsngu3ltpdhqk6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nirmaan_bits.nirmaan",
+            "certificate_hash": "cb48b182793c1c1dab20ce4538e293cf0ea55016"
+          }
+        },
+        {
+          "client_id": "767599280120-rf9ranprhbrhp41oeej8430j6ti79pji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ0M6TKt57Y5cepoYt-wWR1lsxdDoWkKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767599280120-rf9ranprhbrhp41oeej8430j6ti79pji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767599280120:android:b857983257c99c0444a00d",
+        "android_client_info": {
+          "package_name": "id.ramadani.noteq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767599280120-pibijmhhrvsn7ot1ipgpddfbqjsrdnms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ramadani.noteq",
+            "certificate_hash": "1a5a44ce41c8070c8911ccc328fcb8be735a3627"
           }
         },
         {

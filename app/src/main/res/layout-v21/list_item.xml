@@ -59,7 +59,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
-            android:paddingRight="26dp"
+            android:paddingRight="10dp"
             android:weightSum="9">
 
 
@@ -67,10 +67,11 @@
                 android:id="@+id/member_numb"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3.5"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -82,7 +83,8 @@
                 android:text="Year:"
 
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/member_year"
@@ -95,27 +97,18 @@
                 android:layout_weight=".5"
                 android:gravity="center"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/visits_display"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:text="Visits"
-                android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/white"
-                tools:text="Visits:" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/visits_total"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/member_pl"
@@ -125,7 +118,8 @@
                 android:gravity="center"
 
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

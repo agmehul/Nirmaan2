@@ -60,6 +60,8 @@
         android:layout_toRightOf="@+id/button_upload"
         android:gravity="center"
         android:text="Show all Events"
+        android:textColor="@color/lightgray"
+        android:textColorHint="@color/lightgray"
         android:textSize="16sp" />
 
 </RelativeLayout>

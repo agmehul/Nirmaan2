@@ -18,10 +18,14 @@
     android:title="@string/gallery"
     android:icon="@drawable/ic_gallery_image_black_24dp"
 />
-
+    <item
+        android:id="@+id/notes"
+        android:icon="@drawable/ic_event_note_black_24dp"
+        android:title="@string/notes" />
     <item
         android:id="@+id/attendance"
         android:title="@string/Attendance"
         android:icon="@drawable/atttendance_24dp"
         />
+
 </menu>

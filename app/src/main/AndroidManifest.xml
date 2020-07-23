@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".FirebaseHandler"
@@ -15,11 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".projects.edit_member" />
+        <activity android:name=".projects.addMember" />
         <activity android:name=".contact_activity" />
         <activity android:name=".About" />
-        <activity android:name=".history" />
+        <activity android:name=".attendance.history" />
         <activity
-            android:name=".achievements"
+            android:name=".projects.achievements"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
@@ -27,13 +30,26 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".recyclable"
+            android:name=".gallery.recyclable"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".progress"
+            android:name=".projects.progress"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.nirmaan_bits.nirmaan.note.EditNote"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.nirmaan_bits.nirmaan.note.AddNote"
+            android:label="@string/title_activity_add_note"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name="com.nirmaan_bits.nirmaan.note.NoteDetails"
+            android:label="@string/title_activity_note_details"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignIn"
             android:configChanges="orientation"
@@ -58,31 +74,31 @@
         </service>
 
         <activity
-            android:name=".utkarsh"
+            android:name=".projects.utkarsh"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".utkarsh_aim"
+            android:name=".projects.utkarsh_aim"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".utkarsh_semPlan"
+            android:name=".projects.utkarsh_semPlan"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".utkarsh_members"
+            android:name=".projects.utkarsh_members"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".create_folder"
+            android:name=".gallery.create_folder"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FoldersActivity"
+            android:name=".gallery.FoldersActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ImagesActivity"
+            android:name=".gallery.ImagesActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
     </application>

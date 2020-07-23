@@ -8,42 +8,69 @@ public class Contact {
     private String year;
     private String num;
     private String pl;
+    private String key;
+    private String visits;
+    private String email;
 
-    public Contact(String mName, String mYear, String mContact, String pl) {
-        this.name = mName;
-        this.year = mYear;
-        this.num = mContact;
+    public Contact() {
+    }
+
+    public Contact(String name, String year, String num, String pl, String key, String visits,String email) {
+        this.name = name;
+        this.year = year;
+        this.num = num;
         this.pl = pl;
-
-
+        this.key = key;
+        this.visits  = visits;
+        this.email = email;
     }
 
-    public Contact(String mName) {
-
+    public String getEmail() {
+        return email;
     }
 
-    public String getmName() {
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getVisits() {
+        return visits;
+    }
+
+    public void setVisits(String visits) {
+        this.visits = visits;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public void setmName(String mName) {
-        this.name = mName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getmYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setmYear(String mYear) {
-        this.year = mYear;
+    public void setYear(String year) {
+        this.year = year;
     }
 
-    public String getmContact() {
+    public String getNum() {
         return num;
     }
 
-    public void setmContact(String mContact) {
-        this.num = mContact;
+    public void setNum(String num) {
+        this.num = num;
     }
 
     public String getPl() {
@@ -53,7 +80,5 @@ public class Contact {
     public void setPl(String pl) {
         this.pl = pl;
     }
-
-    public  Contact(){}
 }
 

@@ -4,157 +4,295 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black">
+    android:background="@color/black"
+    >
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical"
         android:weightSum="7">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="start"
-            android:layout_weight="3"
-            android:fillViewport="true"
-            android:orientation="vertical"
-            android:weightSum="5">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="171dp"
-                android:layout_weight="2"
-                android:scaleType="center"
-                app:srcCompat="@drawable/person" />
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textColor="@color/white"
-                android:textSize="22sp"></TextView>
+        <ImageButton
+            android:id="@+id/signout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@color/black"
+            android:padding="15dp"
+            android:src="@drawable/ic_power_settings_new_black_24dp"
+            android:text="SIGN OUT"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
 
-            <TextView
-                android:id="@+id/visits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="22sp"></TextView>
-
-
-            <TextView
-                android:id="@+id/pl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="22sp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:background="@color/black">
 
-            <Button
-                android:id="@+id/about"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:text="ABOUT"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+            <!--<ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.3"
+                    android:background="@color/black"
+                    android:padding="10dp"
+                    android:src="@drawable/profile_nirmaan" />
+-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_below="@+id/image_view"
+                android:layout_centerHorizontal="true" />
+            <!--android:layout_marginTop="-30dp"-->
+        </RelativeLayout>
 
-            <Button
-                android:id="@+id/contact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:text="CONTACT"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="normal">
+
+        </TextView>
+
+        <!--  <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+-->
+        <!--     <TextView
+                    android:id="@+id/project_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:gravity="center_horizontal"
+                    android:text="PROJECT : "
+                    android:textColor="#ffffff"
+                    android:textSize="22sp"
+                    android:visibility="invisible" />
+-->
+        <!--            </LinearLayout>-->
+
+
+        <TextView
+            android:id="@+id/pl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="normal"></TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="3">
 
-            <Button
-                android:id="@+id/feedback"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/project_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/rounded_tv"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/project_name_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:text="Project"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/visits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/rounded_tv"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"></TextView>
+
+                <TextView
+                    android:id="@+id/visits_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+
+                    android:gravity="center"
+                    android:text="Visits"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:text="FEEDBACK"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/signout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:text="SIGN OUT"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/visits_in_per"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/rounded_tv"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"></TextView>
+
+                <TextView
+                    android:id="@+id/visits_in_per_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:text="Visits in %"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"></TextView>
+            </LinearLayout>
+
+
         </LinearLayout>
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-        <Button
-            android:id="@+id/select_project"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:text="Select Project"
-            android:textColor="@color/white" />
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/rounded_bt"
+                android:gravity="center"
+                android:src="@drawable/about"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/about_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
 
-        <TextView
-            android:id="@+id/project_1"
-            android:layout_width="match_parent"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:text="ABOUT"
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:gravity="center_horizontal"
-            android:text="PROJECT"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:visibility="invisible" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/project_name"
-            android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_bt"
+                android:gravity="center"
+                android:src="@drawable/contact"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"></ImageButton>
+
+            <TextView
+                android:id="@+id/contact_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                android:gravity="center"
+                android:text="CONTACTS"
+                android:textColor="@color/white"
+                android:textSize="12sp"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            android:background="@color/black"
-            android:gravity="center_horizontal"
+            <ImageButton
+                android:id="@+id/feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/rounded_bt"
+                android:gravity="center"
+                android:src="@drawable/feedback"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"></ImageButton>
 
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:visibility="invisible" />
+            <TextView
+                android:id="@+id/feedback_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="FEEDBACK"
+                android:textColor="@color/white"
+                android:textSize="12sp"></TextView>
+        </LinearLayout>
 
 
     </LinearLayout>

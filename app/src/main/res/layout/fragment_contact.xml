@@ -4,17 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fillViewport="true">
 
-        <LinearLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/contact_recycle"
@@ -23,6 +15,6 @@
                 android:layout_marginBottom="8dp"
                 android:nestedScrollingEnabled="false" />
 
-        </LinearLayout>
-    </ScrollView>
+
+
 </RelativeLayout>
