@@ -1,5 +1,6 @@
 package com.nirmaan_bits.nirmaan.note;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,18 +11,24 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AddNote extends AppCompatActivity {
     FirebaseFirestore fStore;
@@ -29,6 +36,7 @@ public class AddNote extends AppCompatActivity {
     ProgressBar progressBarSave;
    // FirebaseUser user;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +49,12 @@ public class AddNote extends AppCompatActivity {
         noteContent = findViewById(R.id.addNoteContent);
         noteTitle = findViewById(R.id.addNoteTitle);
         progressBarSave = findViewById(R.id.progressBar);
-
+        final String authorName = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
         //user = FirebaseAuth.getInstance().getCurrentUser();
+
+            Calendar c = Calendar .getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy\nHH:mm");
+            final String formattedDate = df.format(c.getTime());
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -66,6 +78,9 @@ public class AddNote extends AppCompatActivity {
                 Map<String,Object> note = new HashMap<>();
                 note.put("title",nTitle);
                 note.put("content",nContent);
+                note.put("date",formattedDate);
+                note.put("author",authorName);
+                note.put("project", MainActivity.project);
                 fStore.collection("notes")
                         .add(note)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

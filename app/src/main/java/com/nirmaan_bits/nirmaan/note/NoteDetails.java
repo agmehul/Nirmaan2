@@ -39,7 +39,7 @@ public class NoteDetails extends AppCompatActivity {
 
         content.setText(data.getStringExtra("content"));
         title.setText(data.getStringExtra("title"));
-        content.setBackgroundColor(getResources().getColor(data.getIntExtra("code",0),null));
+        content.setBackgroundColor(getResources().getColor(data.getIntExtra("code", R.color.skyblue),null));
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -60,7 +60,7 @@ public class NoteDetails extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
-            onBackPressed();
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

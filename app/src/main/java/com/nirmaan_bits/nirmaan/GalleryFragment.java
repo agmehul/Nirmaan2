@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -57,8 +58,12 @@ public class GalleryFragment extends Fragment {
 
    // static TextView project;
     static TextView project1;
+    LinearLayout stats;
+
     private String currentuser = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     private TextView name;
+    TextView greeting;
+
    public static TextView visits_tv;
     public static TextView visits_in_per;
 
@@ -72,9 +77,9 @@ public class GalleryFragment extends Fragment {
 
 
     notf_member member = new notf_member(currentuser);
-    private GoogleSignInClient mGoogleSignInClient;
-    FirebaseAuth mAuth;
-    ImageButton logout;
+    public static GoogleSignInClient mGoogleSignInClient;
+    public static FirebaseAuth mAuth;
+   // ImageButton logout;
     //static Button select_project;
     FirebaseAuth.AuthStateListener mAuthListener;
     ImageView profile;
@@ -89,7 +94,7 @@ public class GalleryFragment extends Fragment {
 
         View homeview = inflater.inflate(R.layout.fragment_gallery, container, false);
       //  project = homeview.findViewById(R.id.project_1);
-
+greeting =  homeview.findViewById(R.id.guest_greeting);
         profile = homeview.findViewById(R.id.profile_image);
         Glide.with(getActivity())
                 .load(uri)
@@ -100,12 +105,15 @@ public class GalleryFragment extends Fragment {
 
 
         project1 = homeview.findViewById(R.id.project_name);
+        stats = homeview.findViewById(R.id.stats);
+
 
         name = homeview.findViewById(R.id.name);
         name.setText(currentuserName.toUpperCase());
         pl = homeview.findViewById(R.id.pl);
         visits_tv = homeview.findViewById(R.id.visits);
         visits_in_per = homeview.findViewById(R.id.visits_in_per);
+
         final Handler mUpdater = new Handler();
         Runnable mUpdateView = new Runnable() {
             @Override
@@ -145,29 +153,16 @@ public class GalleryFragment extends Fragment {
                 project1.setText(MainActivity.project);
                 project1.invalidate();
                 mUpdater3.postDelayed(this, 1000);
+                if(MainActivity.project!="Guest"){
+                    stats.setVisibility(View.VISIBLE);
+                    greeting.setVisibility(View.GONE);
+
+
+                }
+
             }
         };
         mUpdateView3.run();
-
-
-
-
-       /* if(MyFirebaseSrevice.userProp != 0){
-            select_project.setVisibility(View.GONE);
-            //project.setVisibility(View.VISIBLE);
-            project1.setVisibility(View.VISIBLE);
-
-        }*/
-        /*select_project.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(getActivity(), view);
-                popup.setOnMenuItemClickListener(GalleryFragment.this);
-                popup.inflate(R.menu.select_project_menu);
-                popup.show();
-            }
-        });*/
-
 
 
 
@@ -213,139 +208,13 @@ public class GalleryFragment extends Fragment {
 
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
-
-
-
-
-     /*dbr.addValueEventListener(new ValueEventListener() {
-         @Override
-         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-             if(MyFirebaseSrevice.userProp!=0)
-
-             {switch (MyFirebaseSrevice.userProp){
-
-                 case 1:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("gbbaas").child("notification");
-                     break;
-                 case 2:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("gbcb").child("notification");
-                     break;
-                 case 3:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("sap").child("notification");
-                     break;
-                 case 4:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("pcd").child("notification");
-                     break;
-                 case 5:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("sko").child("notification");
-                     break;
-                 case 6:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("utkarsh").child("notification");
-                     break;
-                 case 7:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("disha").child("notification");
-                     break;
-                 case 8:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("unnati1").child("notification");
-                     break;
-                 case 9:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("unnati2").child("notification");
-                     break;
-                 case 10:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("youth").child("notification");
-                     break;
-                 case 11:
-                     databaseReference = FirebaseDatabase.getInstance().getReference().child("notification").child("prd").child("notification");
-                     break;
-                 default:break;
-             }
-                 databaseReference.addValueEventListener(new ValueEventListener() {
-                 @Override
-                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                     final String data = dataSnapshot.getValue(String.class);
-                     final Handler mUpdater3 = new Handler();
-                     Runnable mUpdateView3 = new Runnable() {
-                         @Override
-                         public void run() {
-
-                                 project1.setText(data);
-                             project1.invalidate();
-                             mUpdater3.postDelayed(this, 1000);
-                         }
-                     };
-                     mUpdateView3.run();
-
-
-                    // findIfPl();
-
-                 }
-
-                 @Override
-                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                 }
-             });
-             }
-
-         }
-
-         @Override
-         public void onCancelled(@NonNull DatabaseError databaseError) {
-
-         }
-     });*/
-
-
-
-
     }
 
-
-    /*@Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.gb_bass:
-                databaseReference1.push().setValue(member);
-                return true;
-            case R.id.gb_cb:
-                databaseReference2.push().setValue(member);
-                return true;
-            case R.id.sap:
-                databaseReference3.push().setValue(member);
-                return true;
-            case R.id.pcd:
-                databaseReference4.push().setValue(member);
-                return true;
-            case R.id.sko:
-                databaseReference5.push().setValue(member);
-                return true;
-            case R.id.utkarsh:
-                databaseReference6.push().setValue(member);
-                return true;
-            case R.id.disha:
-                databaseReference7.push().setValue(member);
-                return true;
-            case R.id.unnati_1:
-                databaseReference8.push().setValue(member);
-            case R.id.unnati_2:
-                databaseReference9.push().setValue(member);
-                return true;
-            case R.id.youth:
-                databaseReference10.push().setValue(member);
-                return true;
-            case R.id.prd:
-                databaseReference11.push().setValue(member);
-                return true;
-            default:
-                return false;
-        }
-    }*/
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        logout= Objects.requireNonNull(getView()).findViewById(R.id.signout);
+        //logout= Objects.requireNonNull(getView()).findViewById(R.id.signout);
         mAuth=FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -355,14 +224,14 @@ public class GalleryFragment extends Fragment {
         mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getActivity()), gso);
 
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        /*logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mAuth.signOut();
                 mGoogleSignInClient.signOut();
 
             }
-        });
+        });*/
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -376,89 +245,5 @@ public class GalleryFragment extends Fragment {
 
 
     }
-   /* public static void visibility(){
-       // project.setVisibility(View.VISIBLE);
-        project1.setVisibility(View.VISIBLE);
-
-        select_project.setVisibility(View.GONE);
-
-
-    }*/
-   /* public static void findIfPl(){
-        switch (MyFirebaseSrevice.userProp){
-
-            case 1:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("gbbaas").child("members");
-                break;
-            case 2:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("gbcb").child("members");
-                break;
-            case 3:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("sap").child("members");
-                break;
-            case 4:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("pcd").child("members");
-                break;
-            case 5:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("sko").child("members");
-                break;
-            case 6:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("utkarsh").child("members");
-                break;
-            case 7:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("disha").child("members");
-                break;
-            case 8:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("unnati1").child("members");
-                break;
-            case 9:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("unnati2").child("members");
-                break;
-            case 10:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("youth").child("members");
-                break;
-            case 11:
-                mDbr = FirebaseDatabase.getInstance().getReference().child("Projects").child("prd").child("members");
-                break;
-        }
-        mDbr.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    if(Objects.equals(Objects.requireNonNull(snapshot.child("email").getValue()).toString(), currentuserEmail)) {
-                        if (snapshot.child("pl").getValue() != null) {
-                            pl.setText("PL");
-                            if_pl = 1;
-
-                        }
-                        int visits =0;
-                        int total =0;
-                        if (snapshot.child("history").getValue() != null){
-                            for (DataSnapshot snapshot1 : snapshot.child("history").getChildren()) {
-                                if (snapshot1.child("status").getValue().equals("Present")){
-                                    visits++;
-
-                                }
-                                total++;
-                            }
-                    }
-                        if (snapshot.child("history").getValue() == null)total =1;
-
-                        visits_tv.setText(""+visits);
-                        visits_in_per.setText("" + (visits/total)*100+"%");
-
-                        break;
-
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
 
 }

@@ -48,6 +48,7 @@ public class EditNote extends AppCompatActivity {
 
         String noteTitle = data.getStringExtra("title");
         String noteContent = data.getStringExtra("content");
+        final String docid = data.getStringExtra("noteId");
 
         editNoteTitle.setText(noteTitle);
         editNoteContent.setText(noteContent);
@@ -57,8 +58,8 @@ public class EditNote extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String nTitle = editNoteTitle.getText().toString();
-                String nContent = editNoteContent.getText().toString();
+                final String nTitle = editNoteTitle.getText().toString();
+                final String nContent = editNoteContent.getText().toString();
 
                 if(nTitle.isEmpty() || nContent.isEmpty()){
                     Toast.makeText(EditNote.this, "Can not Save com.nirmaan_bits.nirmaan.note with Empty Field.", Toast.LENGTH_SHORT).show();
@@ -71,7 +72,7 @@ public class EditNote extends AppCompatActivity {
 
                 DocumentReference docref = fStore.collection("notes").document(data.getStringExtra("noteId"));
 
-                Map<String,Object> note = new HashMap<>();
+                final Map<String,Object> note = new HashMap<>();
                 note.put("title",nTitle);
                 note.put("content",nContent);
 
@@ -79,8 +80,14 @@ public class EditNote extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(EditNote.this, "Note Edited.", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                    /*    Intent i = new Intent(EditNote.this, NoteDetails.class);
+                        i.putExtra("title",nTitle);
+                        i.putExtra("content",nContent);
+                        i.putExtra("noteId",docid);
+                        startActivity(i);
 
+*/
+                    onBackPressed();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

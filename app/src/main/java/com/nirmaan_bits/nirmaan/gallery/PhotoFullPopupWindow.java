@@ -13,12 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.palette.graphics.Palette;
 
 import com.bumptech.glide.load.DataSource;
@@ -35,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nirmaan_bits.nirmaan.Constants;
 import com.nirmaan_bits.nirmaan.GlideApp;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -49,14 +52,16 @@ public class PhotoFullPopupWindow extends PopupWindow {
     ProgressBar loading;
     ViewGroup parent;
     private static PhotoFullPopupWindow instance = null;
-    Button delete,download;
+    ImageButton delete,download;
     private FirebaseStorage mStorage;
     private DatabaseReference mDatabaseRef;
+   // LinearLayout image_panel;
 
 
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public PhotoFullPopupWindow(Context ctx, int layout, View v, String imageUrl, Bitmap bitmap, final int position, final String event) {
         super(((LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate( R.layout.popup_photo_full, null), ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -122,6 +127,11 @@ public class PhotoFullPopupWindow extends PopupWindow {
         loading = (ProgressBar) view.findViewById(R.id.loading);
         delete = view.findViewById(R.id.delete);
         download = view.findViewById(R.id.download);
+        //image_panel = view.findViewById(R.id.image_panel);
+        if(MainActivity.project!="Guest"){
+            delete.setVisibility(View.VISIBLE);
+        }
+
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

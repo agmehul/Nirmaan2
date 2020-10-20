@@ -15,7 +15,11 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -39,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
 import java.io.IOException;
@@ -70,6 +75,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     // TextView textView;
     FloatingActionButton choose;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +208,9 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         progressDialog.setMessage("Uploading ..........");
         // textView = findViewById(R.id.alert);
         choose = findViewById(R.id.addToDoItemFAB);
+        if(MainActivity.project!="Guest"){
+            choose.setVisibility(View.VISIBLE);
+        }
         choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -410,6 +419,7 @@ int count = 1;
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onItemClick(int position,ImageView imageView,String url) {
 
@@ -438,19 +448,24 @@ int count = 1;
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDeleteClick(int position) {
-        Upload selectedItem = mUploads.get(position);
-        final String selectedKey = selectedItem.getKey();
+        if(MainActivity.project != "Guest"){Upload selectedItem = mUploads.get(position);
+            final String selectedKey = selectedItem.getKey();
 
-        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
-        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                mDatabaseRef.child(selectedKey).removeValue();
-                Toast.makeText(ImagesActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
+            StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
+            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    mDatabaseRef.child(selectedKey).removeValue();
+                    Toast.makeText(ImagesActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+                }
+            });}
+        else {
+            Toast.makeText(ImagesActivity.this, "Not Allowed", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

@@ -2,7 +2,11 @@ package com.nirmaan_bits.nirmaan.gallery;
 
 import android.content.Intent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -20,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
 import java.util.ArrayList;
@@ -39,6 +44,7 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
 
     private List<folder_upload> mUploads;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,9 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
 
         mProgressCircle = findViewById(R.id.progress_circle);
         create_folder = findViewById(R.id.addToDoItemFAB);
+        if(MainActivity.project!="Guest"){
+            create_folder.setVisibility(View.VISIBLE);
+        }
         create_folder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,8 +156,10 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
         Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
     }
 */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDeleteClick(int position) {
+        if (MainActivity.project != "Guest") {
         folder_upload selectedItem = mUploads.get(position);
         final String selectedKey = selectedItem.getKey();
 
@@ -160,6 +171,10 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
                 Toast.makeText(FoldersActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+        else{
+            Toast.makeText(FoldersActivity.this, "Not Allowed", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

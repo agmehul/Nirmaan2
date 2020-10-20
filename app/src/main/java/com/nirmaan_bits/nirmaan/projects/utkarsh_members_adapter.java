@@ -3,6 +3,7 @@ package com.nirmaan_bits.nirmaan.projects;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nirmaan_bits.nirmaan.Contact;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
 import java.io.IOException;
@@ -76,6 +79,7 @@ public class utkarsh_members_adapter extends RecyclerView.Adapter<utkarsh_member
         TextView name, contact, year, pl, visits;
         ImageView call;
 
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
             visits = itemView.findViewById(R.id.visits_total);
@@ -86,6 +90,11 @@ public class utkarsh_members_adapter extends RecyclerView.Adapter<utkarsh_member
             pl = itemView.findViewById(R.id.member_pl);
             call = itemView.findViewById(R.id.call);
             itemView.setOnCreateContextMenuListener(this);
+            if(MainActivity.project == "Guest"){
+                contact.setVisibility(View.INVISIBLE);
+                call.setVisibility(View.GONE);
+                visits.setVisibility(View.INVISIBLE);
+            }
 
 
 

@@ -54,7 +54,7 @@ public class noteActivity extends Fragment {
        setHasOptionsMenu(true);
         fStore = FirebaseFirestore.getInstance();
 
-        Query query = fStore.collection("notes").orderBy("title", Query.Direction.DESCENDING);
+        Query query = fStore.collection("notes").orderBy("date", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Note> allNotes = new FirestoreRecyclerOptions.Builder<Note>()
                 .setQuery(query,Note.class)
@@ -67,6 +67,9 @@ public class noteActivity extends Fragment {
             protected void onBindViewHolder(@NonNull NoteViewHolder noteViewHolder, final int i, @NonNull final Note note) {
                 noteViewHolder.noteTitle.setText(note.getTitle());
                 noteViewHolder.noteContent.setText(note.getContent());
+                noteViewHolder.noteDate.setText(note.getDate());
+                noteViewHolder.noteAuthor.setText(note.getAuthor());
+                noteViewHolder.noteProject.setText(note.getProject());
                 final int code = getRandomColor();
                 noteViewHolder.mCardView.setCardBackgroundColor(noteViewHolder.view.getResources().getColor(code,null));
                 final String docId = noteAdapter.getSnapshots().getSnapshot(i).getId();
@@ -162,7 +165,7 @@ public class noteActivity extends Fragment {
        return view;
 }
 
-
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.option_menu, menu);
@@ -174,10 +177,10 @@ public class noteActivity extends Fragment {
             Toast.makeText(getContext(), "Settings Menu is Clicked.", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public class NoteViewHolder extends RecyclerView.ViewHolder{
-                TextView noteTitle,noteContent;
+                TextView noteTitle,noteContent,noteAuthor,noteDate,noteProject;
                 View view;
                 CardView mCardView;
 
@@ -186,7 +189,10 @@ public class noteActivity extends Fragment {
 
                     noteTitle = itemView.findViewById(R.id.titles);
             noteContent = itemView.findViewById(R.id.content);
+            noteAuthor = itemView.findViewById(R.id.author);
+            noteDate = itemView.findViewById(R.id.date);
             mCardView = itemView.findViewById(R.id.noteCard);
+            noteProject = itemView.findViewById(R.id.project_note);
             view = itemView;
         }
     }

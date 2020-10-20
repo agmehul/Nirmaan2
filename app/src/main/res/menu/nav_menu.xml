@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Accessories ">
+        <menu>
+            <item
+                android:id="@+id/docs"
+                android:icon="@drawable/ic_folder_black_24dp"
+                android:title="Docs" />
+
+            <item
+                android:id="@+id/notess"
+                android:icon="@drawable/ic_event_note_black_24dp"
+                android:title="Notes" />
+        </menu>
+    </item>
     <item android:title="Support">
         <menu>
             <item
