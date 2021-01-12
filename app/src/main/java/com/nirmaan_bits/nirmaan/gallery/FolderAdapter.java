@@ -1,6 +1,8 @@
 package com.nirmaan_bits.nirmaan.gallery;
 
 import android.content.Context;
+
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -12,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import java.util.List;
 
@@ -34,7 +39,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ImageViewH
     }
 
     @Override
-    public void onBindViewHolder(ImageViewHolder holder, int position) {
+    public void onBindViewHolder(final ImageViewHolder holder, final int position) {
         folder_upload uploadCurrent = mUploads.get(position);
          holder.textViewName.setText(uploadCurrent.getName());
         Glide.with(mContext)
@@ -42,6 +47,31 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ImageViewH
                  .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
                 .into(holder.imageView);
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//creating a popup menu
+                PopupMenu popup = new PopupMenu(mContext, holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.option_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.delete:
+                                mListener.onDeleteClick(position);
+                                //handle delete click
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+
+            }
+        });
     }
 
     @Override
@@ -49,19 +79,22 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ImageViewH
         return mUploads.size();
     }
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
+    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener/*,
+            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener */{
          public TextView textViewName;
         public ImageView imageView;
+        public TextView buttonViewOption;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
 
              textViewName = itemView.findViewById(R.id.text_view_name);
             imageView = itemView.findViewById(R.id.image_view_upload);
-
+            buttonViewOption = itemView.findViewById(R.id.textViewOptions);
+            if(galleryFragment.project == MyFirebaseSrevice.userProp)
+                buttonViewOption.setVisibility(View.VISIBLE);
             itemView.setOnClickListener(this);
-            itemView.setOnCreateContextMenuListener(this);
+            //itemView.setOnCreateContextMenuListener(this);
         }
 
         @Override
@@ -74,7 +107,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ImageViewH
             }
         }
 
-        @Override
+        /*@Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
           //  menu.setHeaderTitle("Select Action");
            // MenuItem doWhatever = menu.add(Menu.NONE, 1, 1, "Do whatever");
@@ -91,9 +124,9 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ImageViewH
                 if (position != RecyclerView.NO_POSITION) {
 
                     switch (item.getItemId()) {
-                        /*case 1:
+                        *//*case 1:
                             mListener.onWhatEverClick(position);
-                            return true;*/
+                            return true;*//*
                         case 1:
                             mListener.onDeleteClick(position);
                             return true;
@@ -101,7 +134,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ImageViewH
                 }
             }
             return false;
-        }
+        }*/
     }
 
     public interface OnItemClickListener {

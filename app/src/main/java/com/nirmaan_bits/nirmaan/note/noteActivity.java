@@ -28,21 +28,25 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class noteActivity extends Fragment {
     RecyclerView noteLists;
     FirebaseFirestore fStore;
     FirestoreRecyclerAdapter<Note,NoteViewHolder> noteAdapter;
-
+    String currentuserName = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
@@ -82,11 +86,13 @@ public class noteActivity extends Fragment {
                         i.putExtra("content",note.getContent());
                         i.putExtra("code",code);
                         i.putExtra("noteId",docId);
+                        i.putExtra("author",note.getAuthor());
                         v.getContext().startActivity(i);
                     }
                 });
 
                 ImageView menuIcon = noteViewHolder.view.findViewById(R.id.menuIcon);
+                if(note.getAuthor().equals(currentuserName) && note.getProject().equals(MainActivity.project)) {menuIcon.setVisibility(View.VISIBLE);}
                 menuIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
@@ -153,6 +159,7 @@ public class noteActivity extends Fragment {
 
 
     FloatingActionButton fab = view.findViewById(R.id.addNoteFloat);
+    if(MainActivity.project!="guest")fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -194,6 +201,7 @@ public class noteActivity extends Fragment {
             mCardView = itemView.findViewById(R.id.noteCard);
             noteProject = itemView.findViewById(R.id.project_note);
             view = itemView;
+
         }
     }
 

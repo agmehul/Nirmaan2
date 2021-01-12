@@ -1,20 +1,27 @@
 package com.nirmaan_bits.nirmaan.projects;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
+
+import java.util.Objects;
 
 public class addMember extends AppCompatActivity {
 DatabaseReference databaseReference;
+DatabaseReference databaseReference_user;
 Query latest;
 Integer sno;
 EditText name,num,year,email;
@@ -87,6 +94,7 @@ add_member = findViewById(R.id.add_member);
 
 
 add_member.setOnClickListener(new View.OnClickListener() {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
       if(name.getText().toString().equals(""))
@@ -103,12 +111,19 @@ add_member.setOnClickListener(new View.OnClickListener() {
         pm.setYear( year.getText().toString());
         pm.setEmail( email.getText().toString());
         databaseReference.push().setValue(pm);
+
+        databaseReference_user = FirebaseDatabase.getInstance().getReference().child("users").child(email.getText().toString().substring(0,9));
+        databaseReference_user.child("name").setValue(name.getText().toString());
+        databaseReference_user.child("project").setValue(MainActivity.project.toLowerCase());
+        databaseReference_user.child("num").setValue(num.getText().toString());
+        databaseReference_user.child("year").setValue(year.getText().toString());
+
         name.setText("");
         num.setText("");
         year.setText("");
-          email.setText("");
+        email.setText("");
 
-          Toast.makeText(addMember.this,"Member added successfully", Toast.LENGTH_SHORT).show();}
+        Toast.makeText(addMember.this,"Member added successfully", Toast.LENGTH_SHORT).show();}
     }
 });
 

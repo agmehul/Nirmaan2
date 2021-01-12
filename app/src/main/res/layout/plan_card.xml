@@ -29,7 +29,7 @@
             android:textSize="18sp" />
 
         <ImageView
-            android:id="@+id/complete"
+            android:id="@+id/edit_complete"
             android:layout_width="0dp"
             android:layout_height="34dp"
             android:layout_gravity="center_vertical"
@@ -37,6 +37,20 @@
             android:src="@drawable/ic_check_black_24dp"
             android:visibility="gone"
             tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/textViewOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="gone" />
 
 
     </LinearLayout>

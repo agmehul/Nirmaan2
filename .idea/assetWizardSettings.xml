@@ -135,7 +135,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_drop_up_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/folder/baseline_folder_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -145,9 +145,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffc107" />
-                            <entry key="outputName" value="arr_up" />
-                            <entry key="sourceFile" value="C:\Users\mehul" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_baseline_folder_24" />
+                            <entry key="sourceFile" value="C:\Users\Mehul Agrawal\Downloads\whatsapp.svg" />
                           </map>
                         </option>
                       </PersistentState>

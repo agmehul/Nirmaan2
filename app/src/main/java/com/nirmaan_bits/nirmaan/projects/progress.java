@@ -181,7 +181,7 @@ public class progress extends AppCompatActivity {
             super(itemView);
             linearLayout=itemView.findViewById(R.id.planCardlinear);
             plan = itemView.findViewById(R.id.pretext);
-            image=itemView.findViewById(R.id.complete);
+            image=itemView.findViewById(R.id.edit_complete);
             card=itemView.findViewById(R.id.planCard);
         }
 

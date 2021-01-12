@@ -11,9 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -37,8 +35,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nirmaan_bits.nirmaan.Constants;
 import com.nirmaan_bits.nirmaan.GlideApp;
-import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
@@ -67,7 +66,7 @@ public class PhotoFullPopupWindow extends PopupWindow {
                 ViewGroup.LayoutParams.MATCH_PARENT);
         mStorage = FirebaseStorage.getInstance();
 
-        switch (HomeFragment.project){
+        switch (galleryFragment.project){
 
             case 1:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery1").child("gbbaas").child(event);
@@ -128,7 +127,7 @@ public class PhotoFullPopupWindow extends PopupWindow {
         delete = view.findViewById(R.id.delete);
         download = view.findViewById(R.id.download);
         //image_panel = view.findViewById(R.id.image_panel);
-        if(MainActivity.project!="Guest"){
+        if(ProjectsFragment.project == MyFirebaseSrevice.userProp){
             delete.setVisibility(View.VISIBLE);
         }
 
@@ -179,7 +178,7 @@ public class PhotoFullPopupWindow extends PopupWindow {
             loading.setIndeterminate(true);
             loading.setVisibility(View.VISIBLE);
 
-            GlideApp.with(ctx) .asBitmap()
+            GlideApp.with(ctx).asBitmap()
                     .load(imageUrl)
 
                     //.error(R.drawable.no_image)

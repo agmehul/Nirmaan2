@@ -23,9 +23,9 @@
         android:icon="@drawable/ic_event_note_black_24dp"
         android:title="@string/notes" />
     <item
-        android:id="@+id/attendance"
-        android:title="@string/Attendance"
-        android:icon="@drawable/atttendance_24dp"
+        android:id="@+id/ideas"
+        android:title="Ideas"
+        android:icon="@drawable/idea_temp"
         />
 
 </menu>

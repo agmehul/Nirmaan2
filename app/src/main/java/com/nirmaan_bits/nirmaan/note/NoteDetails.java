@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nirmaan_bits.nirmaan.R;
 
 import androidx.annotation.NonNull;
@@ -18,9 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Objects;
+
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class NoteDetails extends AppCompatActivity {
     Intent data;
-
+    String currentuserName = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class NoteDetails extends AppCompatActivity {
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        if(data.getStringExtra("author").equals(currentuserName)){fab.setVisibility(View.VISIBLE);}
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

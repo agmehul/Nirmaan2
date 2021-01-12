@@ -3,7 +3,12 @@ package com.nirmaan_bits.nirmaan;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +29,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
 public class SignIn extends AppCompatActivity {
     public void onBackPressed() {
         //  super.onBackPressed();
@@ -55,6 +59,7 @@ public class SignIn extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
 
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
                 signIn();
@@ -86,9 +91,11 @@ startActivity(new Intent(SignIn.this,MainActivity.class));
         .build();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 
     @Override

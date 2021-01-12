@@ -57,7 +57,7 @@ public class create_folder extends AppCompatActivity {
         mEditTextFileName = findViewById(R.id.edit_text_file_name);
         mImageView = findViewById(R.id.image_view);
         mProgressBar = findViewById(R.id.progress_bar);
-        switch (HomeFragment.project){
+        switch (galleryFragment.project){
 
             case 1:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery").child("gbbaas");
@@ -93,7 +93,7 @@ public class create_folder extends AppCompatActivity {
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery").child("all nirmaan");
                 break;
         }
-        switch (HomeFragment.project){
+        switch (galleryFragment.project){
 
             case 1:
                 mStorageRef = FirebaseStorage.getInstance().getReference().child("Gallery").child("gbbaas");

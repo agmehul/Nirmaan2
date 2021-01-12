@@ -17,10 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import java.util.List;
 
@@ -28,15 +32,18 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
     List<String> downloadUrlList;
     List<String> pdfNameList;
-    StorageReference storageRef;
+    StorageReference storageReference;
     String folder_name;
+    String folder_key;
+    //int folder_size;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DatabaseReference databaseReference ;
 
-
-    public PdfAdapter(List<String> pdfUrlList, List<String> pdfNameList, String folder_name) {
+    public PdfAdapter(List<String> pdfUrlList, List<String> pdfNameList, String folder_name,String folder_key) {
         this.downloadUrlList = pdfUrlList;
         this.pdfNameList = pdfNameList;
         this.folder_name = folder_name;
+        this.folder_key = folder_key;
     }
 
     @NonNull
@@ -44,8 +51,81 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
     public PdfViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pdf_view, parent, false);
-        storageRef = FirebaseStorage.getInstance().getReference();
+        //storageRef = FirebaseStorage.getInstance().getReference();
+        switch (ProjectsFragment.project){
 
+            case 1:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("gbbaas");
+                break;
+            case 2:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("gbcb");
+                break;
+            case 3:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("sap");
+                break;
+            case 4:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("pcd");
+                break;
+            case 5:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("sko");
+                break;
+            case 6:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("utkarsh");
+                break;
+            case 7:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("disha");
+                break;
+            case 8:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unnati1");
+                break;
+            case 9:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unnati2");
+                break;
+            case 10:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("youth");
+                break;
+            case 11:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("prd");
+                break;
+            default:
+                storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unknown");
+        }
+        switch (ProjectsFragment.project){
+
+            case 1:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("gbbaas");
+                break;
+            case 2:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("gbcb");
+                break;
+            case 3:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("sap");
+                break;
+            case 4:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("pcd");
+                break;
+            case 5:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("sko");
+                break;
+            case 6:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("utkarsh");
+                break;
+            case 7:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("disha");
+                break;
+            case 8:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("unnati1");
+                break;
+            case 9:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("unnati2");
+                break;
+            case 10:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("youth");
+                break;
+            case 11:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("prd");
+                break;
+        }
         return new PdfViewHolder(view);
     }
 
@@ -79,7 +159,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
                     v.getContext().startActivity(intent);
                 }
             });
-
+            if(ProjectsFragment.project == MyFirebaseSrevice.userProp){
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -111,17 +191,18 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
                             progressDialog.setCancelable(false);
                             progressDialog.show();
 
-                            StorageReference pdfRef = storageRef.getStorage().getReferenceFromUrl(downloadUrlList.get(getAdapterPosition()));
+                            StorageReference pdfRef = storageReference.getStorage().getReferenceFromUrl(downloadUrlList.get(getAdapterPosition()));
                             pdfRef.delete()
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
 
-                                            db.collection(folder_name).document(pdfNameList.get(getAdapterPosition()))
+                                            db.collection(ProjectsFragment.project + "_" + folder_name).document(pdfNameList.get(getAdapterPosition()))
                                                     .delete()
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
+
                                                             Log.d("delTest", "onSuccess: ");
                                                             progressDialog.dismiss();
                                                             dialog.dismiss();
@@ -129,6 +210,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
                                                             pdfNameList.remove(getAdapterPosition());
                                                             downloadUrlList.remove(getAdapterPosition());
                                                             notifyItemRemoved(getAdapterPosition());
+                                                            databaseReference.child(folder_key).child("size").setValue(pdfNameList.size());
 
                                                         }
                                                     })
@@ -155,6 +237,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
                     return true;
                 }
             });
+        }
         }
     }
 }

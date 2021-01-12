@@ -16,11 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".tasks.tasks_activity"></activity>
         <activity android:name=".projects.edit_member" />
         <activity android:name=".projects.addMember" />
+        <activity android:name=".projects.add_semplan" />
+        <activity android:name=".projects.edit_semplan" />
+        <activity android:name=".idea.edit_idea" />
+        <activity android:name=".idea.add_idea" />
         <activity android:name=".contact_activity" />
         <activity android:name=".About" />
         <activity android:name=".attendance.history" />
+        <activity android:name=".attendance.Mark_attendance_activity" />
         <activity
             android:name=".projects.achievements"
             android:configChanges="orientation"
@@ -38,16 +44,14 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.nirmaan_bits.nirmaan.note.EditNote"
+            android:name=".note.EditNote"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.nirmaan_bits.nirmaan.note.AddNote"
+            android:name=".note.AddNote"
             android:label="@string/title_activity_add_note"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name="com.nirmaan_bits.nirmaan.note.NoteDetails"
+            android:name=".note.NoteDetails"
             android:label="@string/title_activity_note_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -101,8 +105,8 @@
             android:name=".gallery.ImagesActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".docs.docActivity"></activity>
-        <activity android:name=".docs.ViewDocActivity"></activity>
+        <activity android:name=".docs.docActivity" />
+        <activity android:name=".docs.ViewDocActivity" />
     </application>
 
 </manifest>

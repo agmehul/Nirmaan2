@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -26,12 +28,22 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.idea.idea;
+import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,9 +55,10 @@ import java.util.Map;
 public class docActivity extends AppCompatActivity {
 
     private RecyclerView folderRecView;
-    List<String> folderNameList;
-    FirebaseStorage storage;
+    List<folder> folderNameList;
+    //FirebaseStorage storage;
     String fName;
+    String fKey;
     String pdfName;
     TextView selectedPdfName;
     FolderGridAdapter adapter;
@@ -54,15 +67,16 @@ public class docActivity extends AppCompatActivity {
     Button choosePdf;
     AlertDialog alertDialog;
     Intent intent;
-
+    private List<String> list_keys = new ArrayList<>();
     List<String> pdfNameList;
     List<Uri> uriList;
     List<String> downloadUrlList;//for uploading to firestore,will get after uploading to firebase storage
-
+    DatabaseReference databaseReference;
 
     int counter;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,22 +84,121 @@ public class docActivity extends AppCompatActivity {
 
 
         folderRecView = findViewById(R.id.fRecyclerView);
-        folderRecView.setLayoutManager(new GridLayoutManager(this, 3));
-
-        folderNameList = PrefConfig.readListFromPref(this);
-        if (folderNameList == null)
-            folderNameList = new ArrayList<>();
-
-        adapter = new FolderGridAdapter(folderNameList);
+        folderRecView.setLayoutManager(new GridLayoutManager(this, 2));
+        folderNameList = new ArrayList<>();
+        adapter = new FolderGridAdapter(folderNameList,docActivity.this);
         folderRecView.setAdapter(adapter);
+        //databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs");
+        switch (ProjectsFragment.project){
 
-        storage = FirebaseStorage.getInstance();
+            case 1:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("gbbaas");
+                break;
+            case 2:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("gbcb");
+                break;
+            case 3:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("sap");
+                break;
+            case 4:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("pcd");
+                break;
+            case 5:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("sko");
+                break;
+            case 6:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("utkarsh");
+                break;
+            case 7:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("disha");
+                break;
+            case 8:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("unnati1");
+                break;
+            case 9:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("unnati2");
+                break;
+            case 10:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("youth");
+                break;
+            case 11:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("prd");
+                break;
+        }
+        //folderNameList.clear();
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                String key = dataSnapshot.getKey();
+                folder folder = dataSnapshot.getValue(folder.class);
+                folder.setKey(key);
+                Log.d("docactivity", "onChildAdded:" + dataSnapshot.getKey());
+                //idea.setKey(key);
+                //idea idea = new idea(content,time,project,upvotes,key);
+                folderNameList.add(folder);
+                list_keys.add(key);
+                adapter.notifyItemInserted(folderNameList.size()-1);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                String key = dataSnapshot.getKey();
+                folder folder = dataSnapshot.getValue(folder.class);
+                folder.setKey(key);
+                //idea.setKey(key);
+                //idea idea = new idea(content,time,project,upvotes,key);
+                int folder_nameIndex = list_keys.indexOf(key);
+                if (folder_nameIndex > -1) {
+                    // Replace with the new data
+                    folderNameList.set(folder_nameIndex, folder);
+
+                    // Update the RecyclerView
+                    adapter.notifyItemChanged(folder_nameIndex);
+                } else {
+                    //Log.w(TAG, "onChildChanged:unknown_child:" + key);
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                //Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+                String key = dataSnapshot.getKey();
+                int folder_nameIndex = list_keys.indexOf(key);
+                if (folder_nameIndex > -1) {
+                    // Replace with the new data
+                    list_keys.remove(folder_nameIndex);
+                    folderNameList.remove(folder_nameIndex);
+
+                    // Update the RecyclerView
+                    adapter.notifyItemRemoved(folder_nameIndex);
+                } else {
+                    //Log.w(TAG, "onChildRemoved:unknown_child:" + key);
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //Log.w(TAG, "postIdeas:onCancelled", databaseError.toException());
+                Toast.makeText(docActivity.this, "Failed to load folders.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //storage = FirebaseStorage.getInstance();
 
         pdfNameList = new ArrayList<>();
         uriList = new ArrayList<>();
         downloadUrlList = new ArrayList<>();
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        if(ProjectsFragment.project == MyFirebaseSrevice.userProp){fab.setVisibility(View.VISIBLE);}
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +223,7 @@ public class docActivity extends AppCompatActivity {
 
         docAlert.setView(alertView);
         alertDialog = docAlert.create();
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCanceledOnTouchOutside(false);
 
         choosePdf.setOnClickListener(new View.OnClickListener() {
 
@@ -142,11 +255,15 @@ public class docActivity extends AppCompatActivity {
         createFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 uploadPDF(v);
-                folderNameList.add(fName);
-                PrefConfig.writeListInPref(getApplicationContext(), folderNameList);
-                adapter.notifyDataSetChanged();
+                if (pdfNameList.size() != 0) {
+                    folder folder = new folder(fName, 0);
+                    fKey = databaseReference.push().getKey();
+                    databaseReference.child(fKey).setValue(folder);
+                }
+
+                //PrefConfig.writeListInPref(getApplicationContext(), folderNameList);
+                //adapter.notifyDataSetChanged();
                 alertDialog.dismiss();
 
             }
@@ -157,6 +274,8 @@ public class docActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pdfNameList.clear();
+                uriList.clear();
                 alertDialog.dismiss();
             }
         });
@@ -177,7 +296,45 @@ public class docActivity extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
 
-            final StorageReference storageReference = storage.getReference();
+            final StorageReference storageReference;
+            switch (ProjectsFragment.project){
+
+                case 1:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("gbbaas");
+                    break;
+                case 2:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("gbcb");
+                    break;
+                case 3:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("sap");
+                    break;
+                case 4:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("pcd");
+                    break;
+                case 5:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("sko");
+                    break;
+                case 6:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("utkarsh");
+                    break;
+                case 7:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("disha");
+                    break;
+                case 8:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unnati1");
+                    break;
+                case 9:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unnati2");
+                    break;
+                case 10:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("youth");
+                    break;
+                case 11:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("prd");
+                    break;
+                default:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unknown");
+            }
 
             for (int i = 0; i < pdfNameList.size(); i++) {
                 final int finalI = i;
@@ -192,6 +349,7 @@ public class docActivity extends AppCompatActivity {
                                     counter++;
                                     progressDialog.setMessage("Uploaded " + counter + "/" + pdfNameList.size());
                                     if (task.isSuccessful()) {
+
                                         downloadUrlList.add(task.getResult().toString());
                                     } else {
                                         storageReference.child(fName + "/").child(pdfNameList.get(finalI)).delete();
@@ -228,7 +386,7 @@ public class docActivity extends AppCompatActivity {
         progressDialog.setMessage("Saving uploaded files...");
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < downloadUrlList.size(); i++) {
-            DocumentReference documentReference = db.collection(fName).document(pdfNameList.get(i));
+            DocumentReference documentReference = db.collection(ProjectsFragment.project +"_"+fName).document(pdfNameList.get(i));
             map.put("url", downloadUrlList.get(i));
             map.put("name", pdfNameList.get(i));
 
@@ -250,6 +408,7 @@ public class docActivity extends AppCompatActivity {
 
 
         }
+        databaseReference.child(fKey).child("size").setValue(pdfNameList.size());
         pdfNameList.clear();
         uriList.clear();
         downloadUrlList.clear();
@@ -267,15 +426,19 @@ public class docActivity extends AppCompatActivity {
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     Uri uri = clipData.getItemAt(i).getUri();
-                    pdfNameList.add(getFileName(uri));
-                    uriList.add(uri);
+                    if(!pdfNameList.contains(getFileName(uri))) {
+                        pdfNameList.add(getFileName(uri));
+                        uriList.add(uri);
+                    }
 
                 }
                 selectedPdfName.setText(pdfNameList.toString());
             } else {
                 Uri uri = data.getData();
-                pdfNameList.add(getFileName(uri));
-                uriList.add(uri);
+                if(!pdfNameList.contains(getFileName(uri))) {
+                    pdfNameList.add(getFileName(uri));
+                    uriList.add(uri);
+                }
                 selectedPdfName.setText(pdfNameList.toString());
             }
         }

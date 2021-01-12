@@ -24,8 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
 
         mProgressCircle = findViewById(R.id.progress_circle);
         create_folder = findViewById(R.id.addToDoItemFAB);
-        if(MainActivity.project!="Guest"){
+        if(galleryFragment.project == MyFirebaseSrevice.userProp){
             create_folder.setVisibility(View.VISIBLE);
         }
         create_folder.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +80,7 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
         mAdapter.setOnItemClickListener(FoldersActivity.this);
 
         mStorage = FirebaseStorage.getInstance();
-        switch (HomeFragment.project){
+        switch (galleryFragment.project){
 
             case 1:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery").child("gbbaas");
@@ -111,7 +112,7 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
             case 10:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery").child("youth");
                 break;
-            case 11:
+            case 0:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery").child("all nirmaan");
                 break;
         }
@@ -159,7 +160,7 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDeleteClick(int position) {
-        if (MainActivity.project != "Guest") {
+        if (galleryFragment.project == MyFirebaseSrevice.userProp) {
         folder_upload selectedItem = mUploads.get(position);
         final String selectedKey = selectedItem.getKey();
 

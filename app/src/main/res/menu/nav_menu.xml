@@ -3,14 +3,9 @@
     <item android:title="Accessories ">
         <menu>
             <item
-                android:id="@+id/docs"
-                android:icon="@drawable/ic_folder_black_24dp"
-                android:title="Docs" />
-
-            <item
-                android:id="@+id/notess"
-                android:icon="@drawable/ic_event_note_black_24dp"
-                android:title="Notes" />
+                android:id="@+id/attendance"
+                android:icon="@drawable/atttendance_24dp"
+                android:title="@string/Attendance" />
         </menu>
     </item>
     <item android:title="Support">

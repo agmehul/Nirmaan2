@@ -37,6 +37,7 @@ public class utkarsh_members_adapter extends RecyclerView.Adapter<utkarsh_member
         this.context = context;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @NonNull
     @Override
     public utkarsh_members_adapter.ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,8 +65,16 @@ public class utkarsh_members_adapter extends RecyclerView.Adapter<utkarsh_member
                 context.startActivity(intent);
             }
         });
-
-
+        holder.whatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String no = "tel:" + member.getNum();
+                String url = "https://api.whatsapp.com/send?phone="+"91 "+no;
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -77,7 +86,7 @@ public class utkarsh_members_adapter extends RecyclerView.Adapter<utkarsh_member
             View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
         TextView name, contact, year, pl, visits;
-        ImageView call;
+        ImageView call,whatsapp;
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         public ContactViewHolder(@NonNull View itemView) {
@@ -89,10 +98,12 @@ public class utkarsh_members_adapter extends RecyclerView.Adapter<utkarsh_member
             year = itemView.findViewById(R.id.member_year);
             pl = itemView.findViewById(R.id.member_pl);
             call = itemView.findViewById(R.id.call);
+            whatsapp = itemView.findViewById(R.id.whatsapp);
             itemView.setOnCreateContextMenuListener(this);
-            if(MainActivity.project == "Guest"){
+            if(MainActivity.project == "guest"){
                 contact.setVisibility(View.INVISIBLE);
                 call.setVisibility(View.GONE);
+                whatsapp.setVisibility(View.GONE);
                 visits.setVisibility(View.INVISIBLE);
             }
 
@@ -142,10 +153,10 @@ public class utkarsh_members_adapter extends RecyclerView.Adapter<utkarsh_member
 
 public interface OnItemClickListener {
 
-    void onWhatEverClick(int position) throws IOException;
+        void onWhatEverClick(int position) throws IOException;
 
-    void onDeleteClick(int position);
-}
+        void onDeleteClick(int position);
+    }
 
     public  void setOnItemClickListener(utkarsh_members_adapter.OnItemClickListener listener) {
         mListener = listener;

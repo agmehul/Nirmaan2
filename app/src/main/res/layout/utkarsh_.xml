@@ -132,7 +132,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginTop="40dp"
-                android:layout_marginBottom="40dp"
                 android:layout_weight="2"
                 android:background="@color/colorPrimaryDark"
                 android:clickable="true"
@@ -142,6 +141,23 @@
                 android:paddingLeft="30dip"
                 android:scaleType="centerCrop"
                 android:text="ACHIEVEMENTS"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+            <Button
+                android:id="@+id/utkarsh6"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                android:layout_weight="2"
+                android:background="@color/colorPrimaryDark"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_baseline_folder_24"
+                android:focusable="true"
+
+                android:paddingLeft="30dip"
+                android:scaleType="centerCrop"
+                android:text="Documents"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

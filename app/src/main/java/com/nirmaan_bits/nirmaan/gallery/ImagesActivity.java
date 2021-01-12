@@ -43,8 +43,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
             // setText() on userName
         }
 
-        switch (HomeFragment.project){
+        switch (galleryFragment.project){
 
             case 1:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery1").child("gbbaas").child(event);
@@ -145,7 +146,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Gallery1").child("all nirmaan").child(event);
                 break;
         }
-        switch (HomeFragment.project){
+        switch (galleryFragment.project){
 
             case 1:
                 mStorageRef = FirebaseStorage.getInstance().getReference().child("Gallery1").child("gbbaas").child(event);
@@ -208,7 +209,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         progressDialog.setMessage("Uploading ..........");
         // textView = findViewById(R.id.alert);
         choose = findViewById(R.id.addToDoItemFAB);
-        if(MainActivity.project!="Guest"){
+        if(galleryFragment.project == MyFirebaseSrevice.userProp){
             choose.setVisibility(View.VISIBLE);
         }
         choose.setOnClickListener(new View.OnClickListener() {
@@ -451,7 +452,7 @@ int count = 1;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDeleteClick(int position) {
-        if(MainActivity.project != "Guest"){Upload selectedItem = mUploads.get(position);
+        if(galleryFragment.project == MyFirebaseSrevice.userProp){Upload selectedItem = mUploads.get(position);
             final String selectedKey = selectedItem.getKey();
 
             StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());

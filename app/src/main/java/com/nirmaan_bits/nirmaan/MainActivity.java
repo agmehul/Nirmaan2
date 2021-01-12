@@ -2,11 +2,9 @@ package com.nirmaan_bits.nirmaan;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -40,13 +38,13 @@ import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
 
 import java.util.Objects;
 
-import com.nirmaan_bits.nirmaan.attendance.Mark_attendance_fragment;
-import com.nirmaan_bits.nirmaan.gallery.HomeFragment;
+import com.nirmaan_bits.nirmaan.gallery.galleryFragment;
+import com.nirmaan_bits.nirmaan.idea.idea_main;
 import com.nirmaan_bits.nirmaan.note.noteActivity;
 import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
-import static com.nirmaan_bits.nirmaan.GalleryFragment.mAuth;
-import static com.nirmaan_bits.nirmaan.GalleryFragment.mGoogleSignInClient;
+
+import static com.nirmaan_bits.nirmaan.R.style.splashScreenTheme;
 
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -56,20 +54,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle toggle;
     Toolbar toolbar;
     TextView userDisplayName,userDisplayEmail;
-
-
+    public static GoogleSignInClient mGoogleSignInClient;
+    public static FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
     private String currentuser = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
     private String currentuserName = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
-
+    DatabaseReference databaseReference;
+    ValueEventListener valueEventListener;
 
     private FirebaseAnalytics mFirebaseAnalytics =  FirebaseAnalytics.getInstance(this);
-    public static final String MY_PREFS_NAME = "MyPrefsFile";
-    private DatabaseReference databaseReference;
-    private DatabaseReference mDbr;
+    //public static final String MY_PREFS_NAME = "MyPrefsFile";
 
-    private  DatabaseReference databaseReference1= FirebaseDatabase.getInstance().getReference().child("Projects").child("gbbaas").child("members");
-    private  DatabaseReference databaseReference2= FirebaseDatabase.getInstance().getReference().child("Projects").child("gbcb").child("members");
+
+    /*private  DatabaseReference databaseReference2= FirebaseDatabase.getInstance().getReference().child("Projects").child("gbcb").child("members");
     private  DatabaseReference databaseReference3= FirebaseDatabase.getInstance().getReference().child("Projects").child("sap").child("members");
     private  DatabaseReference databaseReference4= FirebaseDatabase.getInstance().getReference().child("Projects").child("pcd").child("members");
     private  DatabaseReference databaseReference5= FirebaseDatabase.getInstance().getReference().child("Projects").child("sko").child("members");
@@ -78,12 +75,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private  DatabaseReference databaseReference8= FirebaseDatabase.getInstance().getReference().child("Projects").child("unnati1").child("members");
     private  DatabaseReference databaseReference9= FirebaseDatabase.getInstance().getReference().child("Projects").child("unnati2").child("members");
     private  DatabaseReference databaseReference10= FirebaseDatabase.getInstance().getReference().child("Projects").child("youth").child("members");
-    private  DatabaseReference databaseReference11= FirebaseDatabase.getInstance().getReference().child("Projects").child("prd").child("members");
+    private  DatabaseReference databaseReference11= FirebaseDatabase.getInstance().getReference().child("Projects").child("prd").child("members");*/
 
     BottomNavigationView bottomNav;
     public static ViewPager viewPager;
-    public  static int visits =0 ,total = 1,if_pl;
-    public static  String project = "Guest";
+    public  static int visits =0 ,total = 1,if_pl =0;
+    public static  String project = "guest";
 
 
 
@@ -91,9 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.splashScreenTheme);
+        setTheme(splashScreenTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //userDisplayName.setText(currentuserName);
         //userDisplayEmail.setText(currentuser);
@@ -107,8 +105,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle("Hello, " + first_name);
         navigationView = findViewById(R.id.nested);
         View headerView = navigationView.getHeaderView(0);
-        userDisplayName= (TextView) headerView.findViewById(R.id.userDisplayName);
-        userDisplayEmail = (TextView) headerView.findViewById(R.id.userDisplayEmail);
+        userDisplayName= headerView.findViewById(R.id.userDisplayName);
+        userDisplayEmail =headerView.findViewById(R.id.userDisplayEmail);
         userDisplayName.setText(currentuserName);
         userDisplayEmail.setText(currentuser);
         navigationView.setNavigationItemSelectedListener(this);
@@ -132,11 +130,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-        MyFirebaseSrevice.userProp= prefs.getInt("connect1", 0);
+        /*SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+        MyFirebaseSrevice.userProp= prefs.getInt("connect1", 0);*/
 
 
-        databaseReference1.addValueEventListener(new ValueEventListener() {
+        /*databaseReference1.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -182,10 +180,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
 
 
-        databaseReference2.addValueEventListener(new ValueEventListener() {
+        /*databaseReference2.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -592,7 +590,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
 
 
         viewPager = findViewById(R.id.pager); //Init Viewpager
@@ -603,16 +601,131 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //   getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new GalleryFragment()).commit();
 
 
+        mAuth=FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("767599280120-rf9ranprhbrhp41oeej8430j6ti79pji.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(MainActivity.this), gso);
+
+
+        /*logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                mGoogleSignInClient.signOut();
+
+            }
+        });*/
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser()==null) {
+                    Intent intent=new Intent(MainActivity.this,SignIn.class);
+                    startActivity(intent);
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (databaseReference != null && valueEventListener != null) {
+            databaseReference.removeEventListener(valueEventListener);
+        }
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //Toast.makeText(this, "On start called", Toast.LENGTH_SHORT).show();
+        mAuth.addAuthStateListener(mAuthListener);
+        if(currentuser.substring(0,9).matches("[A-Za-z0-9]+")){
+            databaseReference= FirebaseDatabase.getInstance().getReference().child("users").child(currentuser.substring(0,9));
+            valueEventListener= databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    //Toast.makeText(MainActivity.this, "Onresume called inside value event", Toast.LENGTH_SHORT).show();
+                    if(snapshot.exists()){
+                        if (snapshot.child("pl").getValue() != null) {
+                            if_pl = 1;
+                        }
+
+                        String project_firebase = snapshot.child("project").getValue().toString();
+                        mFirebaseAnalytics.setUserProperty("project", project_firebase);
+                        switch (project_firebase) {
+                            case "gbbaas":
+                                MyFirebaseSrevice.userProp = 1;
+                                break;
+                            case "gbcb":
+                                MyFirebaseSrevice.userProp = 2;
+                                break;
+                            case "sap":
+                                MyFirebaseSrevice.userProp = 3;
+                                break;
+                            case "pcd":
+                                MyFirebaseSrevice.userProp = 4;
+                                break;
+                            case "sko":
+                                MyFirebaseSrevice.userProp = 5;
+                                break;
+                            case "utkarsh":
+                                MyFirebaseSrevice.userProp = 6;
+                                break;
+                            case "disha":
+                                MyFirebaseSrevice.userProp = 7;
+                                break;
+                            case "unnati1":
+                                MyFirebaseSrevice.userProp = 8;
+                                break;
+                            case "unnati2":
+                                MyFirebaseSrevice.userProp = 9;
+                                break;
+                            case "youth":
+                                MyFirebaseSrevice.userProp = 10;
+                                break;
+                            case "prd":
+                                MyFirebaseSrevice.userProp = 11;
+                                break;
+                            default:
+                                MyFirebaseSrevice.userProp = 0;
+                                break;
+                        }
+
+                        project = project_firebase.toUpperCase();
+                    }
+                    else{
+                        MyFirebaseSrevice.userProp = 0;
+                        project = "guest";
+                        if_pl = 0;
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+        else {
+            MyFirebaseSrevice.userProp = 0;
+            project = "guest";
+            if_pl = 0;
+        }
+    }
+
     public static void setupFm(FragmentManager fragmentManager, ViewPager viewPager){
         FragmentAdapter Adapter = new FragmentAdapter(fragmentManager);
         //Add All Fragment To List
-        Adapter.add(new GalleryFragment(), "Home");
+        Adapter.add(new homeFragment(), "Home");
         Adapter.add(new ProjectsFragment(), "Projects");
-        Adapter.add(new HomeFragment(), "Gallery");
+        Adapter.add(new galleryFragment(), "Gallery");
         Adapter.add(new noteActivity(), "Notes");
-        Adapter.add(new Mark_attendance_fragment(), "Mark Attendance");
+        Adapter.add(new idea_main(), "Ideas");
 
         viewPager.setAdapter(Adapter);
     }
@@ -622,7 +735,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            // Fragment aba=null;
+
             switch (item.getItemId()){
                 case R.id.home:
                     viewPager.setCurrentItem(0);
@@ -636,7 +749,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     viewPager.setCurrentItem(2);
                     break;
 
-                case R.id.attendance:
+                case R.id.ideas:
                     viewPager.setCurrentItem(4);
                     break;
                 case R.id.notes:
@@ -660,12 +773,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         closeDrawer();
         switch (menuItem.getItemId()){
-            case R.id.notess:
-                viewPager.setCurrentItem(3);
-                break;
-            case R.id.docs:
-                Intent intent=new Intent(MainActivity.this,com.nirmaan_bits.nirmaan.docs.docActivity.class);
-                startActivity(intent);
+            case R.id.attendance:
+                Intent intent_docs=new Intent(MainActivity.this,com.nirmaan_bits.nirmaan.attendance.Mark_attendance_activity.class);
+                startActivity(intent_docs);
                 break;
             case R.id.logout:
                 mAuth.signOut();
@@ -711,7 +821,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     bottomNav.setSelectedItemId(R.id.gallery);
                     break;
                 case 4:
-                    bottomNav.setSelectedItemId(R.id.attendance);
+                    bottomNav.setSelectedItemId(R.id.ideas);
                     break;
                 case 3:
                     bottomNav.setSelectedItemId(R.id.notes);

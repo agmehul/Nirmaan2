@@ -1,19 +1,24 @@
 package com.nirmaan_bits.nirmaan.projects;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.docs.docActivity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
 
 public class utkarsh extends AppCompatActivity implements View.OnClickListener {
-    private Button utk1,utk2,utk3,utk4,utk5;
+    private Button utk1,utk2,utk3,utk4,utk5,utk6;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +69,9 @@ switch (ProjectsFragment.project){
         utk3 = findViewById(R.id.utkarsh3);
         utk4 = findViewById(R.id.utkarsh4);
         utk5 = findViewById(R.id.utkarsh5);
+        utk6 = findViewById(R.id.utkarsh6);
+        if(MainActivity.project == "guest")
+            utk6.setVisibility(View.GONE);
 
         utk1.setOnClickListener(this);
 
@@ -74,6 +82,7 @@ switch (ProjectsFragment.project){
         utk4.setOnClickListener(this);
 
         utk5.setOnClickListener(this);
+        utk6.setOnClickListener(this);
     }
 
         @Override
@@ -100,6 +109,10 @@ switch (ProjectsFragment.project){
 
                 case R.id.utkarsh5:
                     i=new Intent(this,achievements.class);
+                    startActivity(i);
+                    break;
+                case R.id.utkarsh6:
+                    i=new Intent(this, docActivity.class);
                     startActivity(i);
                     break;
 default:break;

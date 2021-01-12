@@ -1,7 +1,9 @@
 package com.nirmaan_bits.nirmaan.projects;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,12 +12,14 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
 public class edit_member extends AppCompatActivity {
     String name,num,year,key,email;
     EditText name_mem,num_mem,year_mem,email_mem;
     DatabaseReference databaseReference;
+    DatabaseReference databaseReference_user;
     Button edit;
 
     @Override
@@ -86,6 +90,7 @@ public class edit_member extends AppCompatActivity {
         email_mem.setText(email);
 
         edit.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
 
@@ -94,6 +99,11 @@ public class edit_member extends AppCompatActivity {
 
                 databaseReference.child(key).child("year").setValue(year_mem.getText().toString());
                 databaseReference.child(key).child("email").setValue(email_mem.getText().toString());
+                databaseReference_user = FirebaseDatabase.getInstance().getReference().child("users").child(email_mem.getText().toString().substring(0,9));
+                databaseReference_user.child("name").setValue(name_mem.getText().toString());
+                databaseReference_user.child("project").setValue(MainActivity.project.toLowerCase());
+                databaseReference_user.child("num").setValue(num_mem.getText().toString());
+                databaseReference_user.child("year").setValue(year_mem.getText().toString());
 
                 name_mem.setText("");
                 num_mem.setText("");

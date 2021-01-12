@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.nirmaan_bits.nirmaan.R;
+import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,7 +53,7 @@ public class ViewDocActivity extends AppCompatActivity {
     List<String> downloadUrlList;
     List<String> pdfNameList;
 
-    String folder_name;
+    String folder_name,folder_key;
     String pdfName;
     String pdfUrl;
     ProgressBar progressBar;
@@ -68,8 +72,8 @@ public class ViewDocActivity extends AppCompatActivity {
     TextView selectedFile;
     String fileName;
     int counter;
-
-    FirebaseStorage storage;
+    DatabaseReference databaseReference;
+    //FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +86,47 @@ public class ViewDocActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         folder_name = intent.getStringExtra("folderClicked");
+        folder_key = intent.getStringExtra("folderKey");
         fName = findViewById(R.id.fName_tv);
         fName.setText(folder_name);
+        switch (ProjectsFragment.project){
 
+            case 1:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("gbbaas");
+                break;
+            case 2:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("gbcb");
+                break;
+            case 3:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("sap");
+                break;
+            case 4:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("pcd");
+                break;
+            case 5:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("sko");
+                break;
+            case 6:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("utkarsh");
+                break;
+            case 7:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("disha");
+                break;
+            case 8:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("unnati1");
+                break;
+            case 9:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("unnati2");
+                break;
+            case 10:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("youth");
+                break;
+            case 11:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("FoldersForDocs").child("prd");
+                break;
+        }
         pdfRecView = findViewById(R.id.pdfRecyclerView);
-        pdfRecView.setLayoutManager(new GridLayoutManager(this, 3));
+        pdfRecView.setLayoutManager(new GridLayoutManager(this, 2));
 
         downloadUrlList = new ArrayList<>();
         pdfNameList = new ArrayList<>();
@@ -95,9 +135,9 @@ public class ViewDocActivity extends AppCompatActivity {
         uriList = new ArrayList<>();
         downloadList = new ArrayList<>();
 
-        storage = FirebaseStorage.getInstance();
+        //storage = FirebaseStorage.getInstance();
 
-        db.collection(folder_name)
+        db.collection(ProjectsFragment.project +"_"+folder_name)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -121,11 +161,11 @@ public class ViewDocActivity extends AppCompatActivity {
                     }
                 });
 
-        adapter = new PdfAdapter(downloadUrlList, pdfNameList, folder_name);
+        adapter = new PdfAdapter(downloadUrlList, pdfNameList, folder_name,folder_key);
         pdfRecView.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.fabPdf);
-
+        if(ProjectsFragment.project == MyFirebaseSrevice.userProp){fab.setVisibility(View.VISIBLE);}
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +186,7 @@ public class ViewDocActivity extends AppCompatActivity {
 
         docAlert.setView(alertView);
         alertDialog = docAlert.create();
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCanceledOnTouchOutside(false);
 
         chooseFiles.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +214,8 @@ public class ViewDocActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
+                fileNameList.clear();
+                uriList.clear();
             }
         });
 
@@ -192,7 +234,45 @@ public class ViewDocActivity extends AppCompatActivity {
             progressDialog.setCancelable(false);    //Remove this line if you want your user to be able to cancel upload
             progressDialog.show();
 
-            final StorageReference storageReference = storage.getReference();
+            final StorageReference storageReference;
+            switch (ProjectsFragment.project){
+
+                case 1:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("gbbaas");
+                    break;
+                case 2:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("gbcb");
+                    break;
+                case 3:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("sap");
+                    break;
+                case 4:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("pcd");
+                    break;
+                case 5:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("sko");
+                    break;
+                case 6:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("utkarsh");
+                    break;
+                case 7:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("disha");
+                    break;
+                case 8:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unnati1");
+                    break;
+                case 9:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unnati2");
+                    break;
+                case 10:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("youth");
+                    break;
+                case 11:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("prd");
+                    break;
+                default:
+                    storageReference = FirebaseStorage.getInstance().getReference().child("FoldersForDocs").child("unknown");
+            }
 
             for (int i = 0; i < fileNameList.size(); i++) {
                 final int finalI = i;
@@ -207,6 +287,7 @@ public class ViewDocActivity extends AppCompatActivity {
                                     counter++;
                                     progressDialog.setMessage("Uploaded " + counter + "/" + fileNameList.size());
                                     if (task.isSuccessful()) {
+
                                         downloadList.add(task.getResult().toString());
 
                                     } else {
@@ -245,7 +326,7 @@ public class ViewDocActivity extends AppCompatActivity {
         progressDialog.setMessage("Saving uploaded files...");
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < downloadList.size(); i++) {
-            DocumentReference documentReference = db.collection(folder_name).document(fileNameList.get(i));
+            DocumentReference documentReference = db.collection(ProjectsFragment.project +"_"+folder_name).document(fileNameList.get(i));
             map.put("url", downloadList.get(i));
             map.put("name", fileNameList.get(i));
 
@@ -253,11 +334,11 @@ public class ViewDocActivity extends AppCompatActivity {
             downloadUrlList.add(downloadList.get(i));
             adapter.notifyDataSetChanged();
 
+
             documentReference.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     progressDialog.dismiss();
-
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
@@ -268,14 +349,11 @@ public class ViewDocActivity extends AppCompatActivity {
                             Log.e("error", "onFailure: " + e.getMessage());
                         }
                     });
-
-
         }
-
+        databaseReference.child(folder_key).child("size").setValue(pdfNameList.size());
         fileNameList.clear();
         uriList.clear();
         downloadList.clear();
-
     }
 
     @Override
@@ -287,15 +365,19 @@ public class ViewDocActivity extends AppCompatActivity {
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     Uri uri = clipData.getItemAt(i).getUri();
-                    fileNameList.add(getPdfName(uri));
-                    uriList.add(uri);
+                    if(!fileNameList.contains(getPdfName(uri))&& !pdfNameList.contains(getPdfName(uri))) {
+                        fileNameList.add(getPdfName(uri));
+                        uriList.add(uri);
+                    }
 
                 }
                 selectedFile.setText(fileNameList.toString());
             } else {
                 Uri uri = data.getData();
-                fileNameList.add(getPdfName(uri));
-                uriList.add(uri);
+                if(!fileNameList.contains(getPdfName(uri)) && !pdfNameList.contains(getPdfName(uri))) {
+                    fileNameList.add(getPdfName(uri));
+                    uriList.add(uri);
+                }
                 selectedFile.setText(fileNameList.toString());
             }
         }
