@@ -17,9 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/nirmaan_logo"></ImageView>
+            android:padding="36dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_nirmaan_logo"></ImageView>
 
         <TextView
             android:id="@+id/userDisplayName"

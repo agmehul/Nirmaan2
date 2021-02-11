@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
 import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
@@ -53,13 +54,13 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
 
         mProgressCircle = findViewById(R.id.progress_circle);
         create_folder = findViewById(R.id.addToDoItemFAB);
-        if(galleryFragment.project == MyFirebaseSrevice.userProp){
+        if (galleryFragment.project == MyFirebaseSrevice.userProp || (galleryFragment.project==0 && !MainActivity.project.equals("guest"))) {
             create_folder.setVisibility(View.VISIBLE);
         }
         create_folder.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +161,7 @@ public class FoldersActivity extends AppCompatActivity implements FolderAdapter.
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDeleteClick(int position) {
-        if (galleryFragment.project == MyFirebaseSrevice.userProp) {
+        if (galleryFragment.project == MyFirebaseSrevice.userProp || (galleryFragment.project==0 && !MainActivity.project.equals("guest"))) {
         folder_upload selectedItem = mUploads.get(position);
         final String selectedKey = selectedItem.getKey();
 

@@ -65,45 +65,15 @@
                 <EditText
                     android:id="@+id/content"
                     android:layout_width="match_parent"
-
-
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:ems="10"
                     android:gravity="bottom"
-                    android:inputType="textPersonName"
                     android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-
-
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:gravity="bottom"
-                    android:text=" Complete"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <Spinner
-                    android:id="@+id/edit_complete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:ems="10"
-                    android:gravity="bottom"
-                    android:inputType="textPersonName"
-                    android:text=""
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView5"
@@ -113,26 +83,47 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.5"
                     android:gravity="bottom"
-                    android:text=" Weight"
+                    android:paddingLeft="8dp"
+                    android:text="Deadline"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:id="@+id/edit_weight"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-
-
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:ems="10"
-                    android:gravity="bottom"
-                    android:inputType="textPersonName"
-                    android:text=""
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:id="@+id/deadlineTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="8dp"
+                        android:text="No deadline"
+                        android:textColor="@color/lightgray"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/deadlineBt"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/deadlineBt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="8dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/deadlineTV"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/deadlineTV"
+                        app:srcCompat="@drawable/ic_calendar" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
         </FrameLayout>

@@ -2,14 +2,18 @@ package com.nirmaan_bits.nirmaan.docs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -133,6 +137,18 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
     public void onBindViewHolder(@NonNull PdfViewHolder holder, final int position) {
 
         holder.pdfDisplayName.setText(pdfNameList.get(position));
+        String url = pdfNameList.get(position);
+        if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
+            // Word document
+            holder.imageView.setImageResource(R.drawable.ic_google_docs);
+        }
+        else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
+            // Powerpoint file
+            holder.imageView.setImageResource(R.drawable.ic_ppt);
+        }else if (url.toString().contains(".xls") || url.toString().contains(".xlsx")) {
+            // Excel file
+            holder.imageView.setImageResource(R.drawable.ic_excel);
+        }
     }
 
     @Override
@@ -143,12 +159,14 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
     public class PdfViewHolder extends RecyclerView.ViewHolder {
 
         TextView pdfDisplayName;
+        ImageView imageView;
+
 
         public PdfViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             pdfDisplayName = itemView.findViewById(R.id.pdfDisplayName_tv);
-
+            imageView = itemView.findViewById(R.id.imageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,7 +174,8 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
                     Intent intent = new Intent();
                     intent.setType(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(downloadUrlList.get(getAdapterPosition())));
-                    v.getContext().startActivity(intent);
+                    Intent j = Intent.createChooser(intent, "Choose an application to open with:");
+                    v.getContext().startActivity(j);
                 }
             });
             if(ProjectsFragment.project == MyFirebaseSrevice.userProp){
@@ -240,4 +259,5 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         }
         }
     }
+
 }

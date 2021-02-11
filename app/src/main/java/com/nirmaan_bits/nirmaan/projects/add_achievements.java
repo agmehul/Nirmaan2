@@ -1,30 +1,32 @@
 package com.nirmaan_bits.nirmaan.projects;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.nirmaan_bits.nirmaan.R;
 
-public class
-achievements extends AppCompatActivity {
+import java.util.Calendar;
 
-    private DatabaseReference databaseReference;
-    TextView pachievements;
-
-
+public class add_achievements extends AppCompatActivity{
+DatabaseReference databaseReference;
+EditText content;
+Button add_achievement;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_achievements);
-
-
+        setContentView(R.layout.activity_add_achievements);
         switch (ProjectsFragment.project){
 
             case 1:
@@ -58,27 +60,23 @@ achievements extends AppCompatActivity {
                 databaseReference = FirebaseDatabase.getInstance().getReference().child("Projects").child("youth").child("achievements");
                 break;
         }
+content = findViewById(R.id.content);
+add_achievement = findViewById(R.id.add_achievement);
 
-        pachievements=findViewById(R.id.achievements);
 
-    }
-
+        add_achievement.setOnClickListener(new View.OnClickListener() {
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String text = dataSnapshot.getValue(String.class);
-                pachievements.setText(text);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    public void onClick(View view) {
+      if(content.getText().toString().equals(""))
+          Toast.makeText(add_achievements.this,"Enter achievement", Toast.LENGTH_SHORT).show();
+       else  {
+            ach ach = new ach(content.getText().toString(),"");
+        databaseReference.push().setValue(ach);
+        Toast.makeText(add_achievements.this,"Achievement added successfully", Toast.LENGTH_SHORT).show();
+       finish();}
     }
+});
+
+    }
+
 }

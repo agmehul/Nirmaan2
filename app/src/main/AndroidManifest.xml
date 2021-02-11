@@ -21,16 +21,17 @@
         <activity android:name=".projects.addMember" />
         <activity android:name=".projects.add_semplan" />
         <activity android:name=".projects.edit_semplan" />
+        <activity android:name=".projects.add_achievements" />
+        <activity android:name=".projects.edit_achievement" />
+        <activity android:name=".projects.add_aims" />
+        <activity android:name=".projects.edit_aims" />
         <activity android:name=".idea.edit_idea" />
         <activity android:name=".idea.add_idea" />
         <activity android:name=".contact_activity" />
+        <activity android:name=".developers_activity" />
         <activity android:name=".About" />
         <activity android:name=".attendance.history" />
         <activity android:name=".attendance.Mark_attendance_activity" />
-        <activity
-            android:name=".projects.achievements"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".feedback"
             android:configChanges="orientation"
@@ -82,11 +83,15 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".projects.utkarsh_aim"
+            android:name=".projects.utkarsh_semPlan"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".projects.utkarsh_semPlan"
+            android:name=".projects.utkarsh_achievements"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".projects.utkarsh_aims"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity

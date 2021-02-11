@@ -6,17 +6,12 @@
     android:layout_height="match_parent"
     >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/planRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black">
+        android:background="@color/black"
+        android:padding="12dp">
 
     </androidx.recyclerview.widget.RecyclerView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

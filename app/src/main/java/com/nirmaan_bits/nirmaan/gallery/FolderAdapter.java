@@ -44,7 +44,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ImageViewH
          holder.textViewName.setText(uploadCurrent.getName());
         Glide.with(mContext)
                 .load(uploadCurrent.getImageUrl())
-                 .placeholder(R.mipmap.ic_launcher)
+                 .placeholder(R.drawable.ic_nirmaan_logo)
                 .centerCrop()
                 .into(holder.imageView);
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {

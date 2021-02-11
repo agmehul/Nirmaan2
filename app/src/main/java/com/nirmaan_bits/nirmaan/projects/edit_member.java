@@ -101,7 +101,7 @@ public class edit_member extends AppCompatActivity {
                 databaseReference.child(key).child("email").setValue(email_mem.getText().toString());
                 databaseReference_user = FirebaseDatabase.getInstance().getReference().child("users").child(email_mem.getText().toString().substring(0,9));
                 databaseReference_user.child("name").setValue(name_mem.getText().toString());
-                databaseReference_user.child("project").setValue(MainActivity.project.toLowerCase());
+                //databaseReference_user.child("project").setValue(MainActivity.project.toLowerCase());
                 databaseReference_user.child("num").setValue(num_mem.getText().toString());
                 databaseReference_user.child("year").setValue(year_mem.getText().toString());
 

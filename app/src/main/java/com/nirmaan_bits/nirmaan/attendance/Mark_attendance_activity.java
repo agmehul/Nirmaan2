@@ -149,6 +149,8 @@ public class Mark_attendance_activity extends AppCompatActivity {
 
                                 }
                             });
+                        }else {
+                            setContentView(R.layout.not_pl_mark_attend);
                         }
 
                     } else {

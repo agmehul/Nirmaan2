@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class galleryFragment extends Fragment implements gallery_project_adapter.OnItemClickListener {
-    public static int project =1;
+    public static int project =0;
     private RecyclerView recyclerView;
 
     private gallery_project_adapter adapter;
@@ -209,7 +209,7 @@ public class galleryFragment extends Fragment implements gallery_project_adapter
         list.add("DISHA");
         list.add("UNNATI 1");
         list.add("UNNATI 2");
-        list.add("YOUTH");
+        list.add("YOUTH EMPLOYMENT");
         adapter = new gallery_project_adapter(list, getActivity());
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);

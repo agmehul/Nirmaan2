@@ -43,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
 import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
@@ -84,7 +85,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
 
 
@@ -209,7 +210,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         progressDialog.setMessage("Uploading ..........");
         // textView = findViewById(R.id.alert);
         choose = findViewById(R.id.addToDoItemFAB);
-        if(galleryFragment.project == MyFirebaseSrevice.userProp){
+        if(galleryFragment.project == MyFirebaseSrevice.userProp || (galleryFragment.project==0 && !MainActivity.project.equals("guest"))){
             choose.setVisibility(View.VISIBLE);
         }
         choose.setOnClickListener(new View.OnClickListener() {
@@ -452,7 +453,7 @@ int count = 1;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDeleteClick(int position) {
-        if(galleryFragment.project == MyFirebaseSrevice.userProp){Upload selectedItem = mUploads.get(position);
+        if(galleryFragment.project == MyFirebaseSrevice.userProp || (galleryFragment.project==0 && !MainActivity.project.equals("guest"))){Upload selectedItem = mUploads.get(position);
             final String selectedKey = selectedItem.getKey();
 
             StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());

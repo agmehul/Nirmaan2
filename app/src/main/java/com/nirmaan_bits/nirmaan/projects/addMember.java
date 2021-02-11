@@ -22,8 +22,6 @@ import java.util.Objects;
 public class addMember extends AppCompatActivity {
 DatabaseReference databaseReference;
 DatabaseReference databaseReference_user;
-Query latest;
-Integer sno;
 EditText name,num,year,email;
 Button add_member;
     @Override

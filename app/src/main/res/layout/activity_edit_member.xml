@@ -156,9 +156,11 @@
                     android:layout_weight=".5"
                     android:ems="10"
                     android:gravity="bottom"
+                    android:hint="Enter BITS mail only"
                     android:inputType="textPersonName"
                     android:text=""
                     android:textColor="@color/white"
+                    android:textColorHint="@color/lightgray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

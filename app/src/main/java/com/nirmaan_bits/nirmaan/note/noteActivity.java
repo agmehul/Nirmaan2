@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +37,10 @@ import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -71,12 +75,21 @@ public class noteActivity extends Fragment {
             protected void onBindViewHolder(@NonNull NoteViewHolder noteViewHolder, final int i, @NonNull final Note note) {
                 noteViewHolder.noteTitle.setText(note.getTitle());
                 noteViewHolder.noteContent.setText(note.getContent());
-                noteViewHolder.noteDate.setText(note.getDate());
+                try {
+                    noteViewHolder.noteDate.setText(new SimpleDateFormat("dd-MM-yyyy\nHH:mm").format(new SimpleDateFormat("dd-MM-yyyy\nHH:mm:ss").parse(note.getDate())));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                //Log.d("hello",new SimpleDateFormat("dd-MM-yyyy\nHH:mm").format(note.getDate()));
+                //Log.d("hello", Calendar.getInstance().getTime().toString());
                 noteViewHolder.noteAuthor.setText(note.getAuthor());
-                noteViewHolder.noteProject.setText(note.getProject());
+                if(note.getProject().equals("GBCB"))
+                    noteViewHolder.noteProject.setText("PKP");
+                else
+                    noteViewHolder.noteProject.setText(note.getProject());
                 final int code = getRandomColor();
                 noteViewHolder.mCardView.setCardBackgroundColor(noteViewHolder.view.getResources().getColor(code,null));
-                final String docId = noteAdapter.getSnapshots().getSnapshot(i).getId();
+                //final String docId = noteAdapter.getSnapshots().getSnapshot(i).getId();
 
                 noteViewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -85,7 +98,7 @@ public class noteActivity extends Fragment {
                         i.putExtra("title",note.getTitle());
                         i.putExtra("content",note.getContent());
                         i.putExtra("code",code);
-                        i.putExtra("noteId",docId);
+                        i.putExtra("noteId",note.getDate());
                         i.putExtra("author",note.getAuthor());
                         v.getContext().startActivity(i);
                     }
@@ -105,7 +118,7 @@ public class noteActivity extends Fragment {
                                 Intent i = new Intent(v.getContext(), EditNote.class);
                                 i.putExtra("title",note.getTitle());
                                 i.putExtra("content",note.getContent());
-                                i.putExtra("noteId",docId);
+                                i.putExtra("noteId",note.getDate());
                                 startActivity(i);
                                 return false;
                             }
@@ -114,7 +127,7 @@ public class noteActivity extends Fragment {
                         menu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                DocumentReference docRef = fStore.collection("notes").document(docId);
+                                DocumentReference docRef = fStore.collection("notes").document(note.getDate());
                                 docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

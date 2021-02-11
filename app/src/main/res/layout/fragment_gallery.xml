@@ -7,7 +7,7 @@
     android:background="@color/black">
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -27,11 +27,7 @@
             android:textSize="16sp" />-->
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!--<ImageView
+        <!--<ImageView
                     android:id="@+id/image_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,42 +36,73 @@
                     android:padding="10dp"
                     android:src="@drawable/profile_nirmaan" />
 -->
+        <!--android:layout_marginTop="-30dp"-->
+        <ImageView
+            android:id="@+id/nirmaan_logo_id"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:background="@color/colorPrimaryDark"
+            android:padding="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_nirmaan_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imageCard"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/pl"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/name">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_below="@+id/image_view"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp" />
-            <!--android:layout_marginTop="-30dp"-->
-        </RelativeLayout>
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@android:color/black"
+                android:src="@drawable/ic_nirmaan_logo"
+                app:civ_border_color="@color/colorPrimaryDark"
+                app:civ_border_width="3dp" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:gravity="center|center_horizontal"
+            android:text="name"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:textStyle="normal"></TextView>
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageCard"
+            app:layout_constraintTop_toBottomOf="@+id/nirmaan_logo_id"
+            tools:layout_conversion_absoluteHeight="27dp"
+            tools:layout_conversion_absoluteWidth="411dp"></TextView>
+
         <TextView
             android:id="@+id/project_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center"
+            android:text="Guest"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:textStyle="normal"></TextView>
-        <TextView
-            android:id="@+id/pl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:textStyle="normal"></TextView>
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="@+id/name"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            tools:layout_conversion_absoluteHeight="27dp"
+            tools:layout_conversion_absoluteWidth="411dp"></TextView>
 
 
         <!--<LinearLayout
@@ -180,17 +207,36 @@
         </LinearLayout>-->
 
         <TextView
-            android:id="@+id/guest_greeting"
-            android:layout_width="match_parent"
+            android:id="@+id/pl"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="@+id/project_name"
+            app:layout_constraintStart_toStartOf="@+id/project_name"
+            app:layout_constraintTop_toBottomOf="@+id/project_name"
+            tools:layout_conversion_absoluteHeight="27dp"
+            tools:layout_conversion_absoluteWidth="411dp"></TextView>
+
+        <TextView
+            android:id="@+id/guest_greeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:gravity="center_horizontal"
             android:text="Hola Bitsian!!\nWelcome to\nNirmaan, BITS Pilani"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:textStyle="normal"
-            android:visibility="visible">
-        </TextView>
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pl"
+            tools:layout_conversion_absoluteHeight="74dp"
+            tools:layout_conversion_absoluteWidth="411dp"></TextView>
 
         <!--  <LinearLayout
                 android:layout_width="match_parent"
@@ -213,7 +259,7 @@
         <!--            </LinearLayout>-->
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

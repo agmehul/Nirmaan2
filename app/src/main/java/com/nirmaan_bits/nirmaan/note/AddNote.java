@@ -53,8 +53,9 @@ public class AddNote extends AppCompatActivity {
         //user = FirebaseAuth.getInstance().getCurrentUser();
 
             Calendar c = Calendar .getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy\nHH:mm");
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy\nHH:mm:ss");
             final String formattedDate = df.format(c.getTime());
+            //final String formattedDate = c.getTime().toString();
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -81,11 +82,10 @@ public class AddNote extends AppCompatActivity {
                 note.put("date",formattedDate);
                 note.put("author",authorName);
                 note.put("project", MainActivity.project);
-                fStore.collection("notes")
-                        .add(note)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                DocumentReference documentReference = fStore.collection("notes").document(formattedDate);
+                documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
+                            public void onSuccess(Void aVoid) {
                                 Toast.makeText(AddNote.this, "Note Added.", Toast.LENGTH_SHORT).show();
                                 onBackPressed();
                             }

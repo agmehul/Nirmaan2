@@ -1,6 +1,7 @@
 package com.nirmaan_bits.nirmaan.projects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,10 +11,12 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,24 +25,30 @@ import com.google.firebase.database.ValueEventListener;
 import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
+import com.nirmaan_bits.nirmaan.idea.idea;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class utkarsh_semPlan extends AppCompatActivity implements utkarsh_semplan_adapter.OnItemClickListener{
-
+    private String currentuser = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference_contacts;
     private RecyclerView recyclerView;
     private FloatingActionButton fb_semplan;
     List<semplan> list = new ArrayList<>();
+    List<String> list_keys = new ArrayList<>();
     utkarsh_semplan_adapter adapter;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     protected void onCreate(Bundle savedInstanceState) {
         //Toast.makeText(this, "on create called of utkarsh semplan "+MainActivity.if_pl+" " +MyFirebaseSrevice.userProp, Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.utkarsh_activity_sem_plan);
+        list.clear();
+        list_keys.clear();
         switch (ProjectsFragment.project){
 
             case 1:
@@ -77,9 +86,27 @@ public class utkarsh_semPlan extends AppCompatActivity implements utkarsh_sempla
 
         recyclerView=findViewById(R.id.planRecycler);
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new utkarsh_semplan_adapter(utkarsh_semPlan.this, list);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(utkarsh_semPlan.this);
         fb_semplan = findViewById(R.id.add_sem);
+        if(currentuser.substring(0,9).matches("[A-Za-z0-9]+")){
+            databaseReference_contacts= FirebaseDatabase.getInstance().getReference().child("contactsMailIndexed").child(currentuser.substring(0,9));
+            databaseReference_contacts.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        if (snapshot.child("position").getValue() != null) {
+                            fb_semplan.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });}
         if(MainActivity.if_pl == 1 && ProjectsFragment.project == MyFirebaseSrevice.userProp) {
             fb_semplan.setVisibility(View.VISIBLE);
         }
@@ -93,22 +120,54 @@ public class utkarsh_semPlan extends AppCompatActivity implements utkarsh_sempla
                 startActivity(intent);
             }
         });
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String key = dataSnapshot.getKey();
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                String key = dataSnapshot.getKey();
+                if(!list_keys.contains(key)) {
                     String plan = dataSnapshot.child("plan").getValue().toString();
                     String complete = dataSnapshot.child("complete").getValue().toString();
-                    String weight = dataSnapshot.child("weight").getValue().toString();
-                    semplan splan = new semplan(plan,key,complete,weight);
+                    String deadline = dataSnapshot.child("weight").getValue().toString();
+                    semplan splan = new semplan(plan,key,complete,deadline);
                     list.add(splan);
+                    list_keys.add(key);
+                    adapter.notifyItemInserted(list.size() - 1);
                 }
-                adapter = new utkarsh_semplan_adapter(utkarsh_semPlan.this, list);
-                recyclerView.setAdapter(adapter);
-                adapter.setOnItemClickListener(utkarsh_semPlan.this);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                String key = dataSnapshot.getKey();
+                String plan = dataSnapshot.child("plan").getValue().toString();
+                String complete = dataSnapshot.child("complete").getValue().toString();
+                String deadline = dataSnapshot.child("weight").getValue().toString();
+                semplan splan = new semplan(plan,key,complete,deadline);
+                int ideaIndex = list_keys.indexOf(key);
+                if (ideaIndex > -1) {
+                    list.set(ideaIndex, splan);
+                    adapter.notifyItemChanged(ideaIndex);
+                } else {
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                int ideaIndex = list_keys.indexOf(key);
+                if (ideaIndex > -1) {
+                    // Replace with the new data
+                    list_keys.remove(ideaIndex);
+                    list.remove(ideaIndex);
+
+                    // Update the RecyclerView
+                    adapter.notifyItemRemoved(ideaIndex);
+                } else {
+                    //Log.w(TAG, "onChildRemoved:unknown_child:" + key);
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
 
@@ -117,7 +176,6 @@ public class utkarsh_semPlan extends AppCompatActivity implements utkarsh_sempla
 
             }
         });
-
     }
 
 
@@ -218,7 +276,7 @@ public class utkarsh_semPlan extends AppCompatActivity implements utkarsh_sempla
     public void onDeleteClick(int position) {
         //if(MainActivity.if_pl == 1 && ProjectsFragment.project == MyFirebaseSrevice.userProp) {
             databaseReference.child(list.get(position).getKey()).removeValue();
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
         //}
         //else Toast.makeText(utkarsh_semPlan.this,"Only PL's are allowed to delete",Toast.LENGTH_SHORT).show();
     }

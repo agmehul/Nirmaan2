@@ -127,6 +127,7 @@ public class ViewDocActivity extends AppCompatActivity {
         }
         pdfRecView = findViewById(R.id.pdfRecyclerView);
         pdfRecView.setLayoutManager(new GridLayoutManager(this, 2));
+        //pdfRecView.setHasFixedSize(true);
 
         downloadUrlList = new ArrayList<>();
         pdfNameList = new ArrayList<>();
@@ -193,7 +194,7 @@ public class ViewDocActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 i = new Intent();
-                i.setType("application/pdf/*");
+                i.setType("*/*");
                 i.setAction(Intent.ACTION_GET_CONTENT);
                 i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(Intent.createChooser(i, "Please choose a PDF File"), 1010);

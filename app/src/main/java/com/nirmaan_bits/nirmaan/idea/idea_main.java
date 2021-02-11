@@ -44,7 +44,7 @@ public class idea_main extends Fragment implements idea_adapter.OnItemClickListe
     private RecyclerView recyclerView;
     private FloatingActionButton fb_addidea;
     List<idea> list = new ArrayList<>();
-    private List<String> list_keys = new ArrayList<>();
+    List<String> list_keys = new ArrayList<>();
     idea_adapter adapter;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -53,6 +53,7 @@ public class idea_main extends Fragment implements idea_adapter.OnItemClickListe
 
         View view= inflater.inflate(R.layout.idea_main, container, false);
         list.clear();
+        list_keys.clear();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("ideas");
 
         recyclerView=view.findViewById(R.id.ideaRecycler);
@@ -86,35 +87,24 @@ public class idea_main extends Fragment implements idea_adapter.OnItemClickListe
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 String key = dataSnapshot.getKey();
-//                String content = dataSnapshot.child("content").getValue().toString();
-//                String time = dataSnapshot.child("time").getValue().toString();
-//                String project = dataSnapshot.child("project").getValue().toString();
-//                Integer upvotes = dataSnapshot.child("upvotes").getValue(Integer.class);
-                idea idea = dataSnapshot.getValue(idea.class);
-                idea.setKey(key);
-                //idea idea = new idea(content,time,project,upvotes,key);
-                list.add(idea);
-                list_keys.add(key);
-                adapter.notifyItemInserted(list.size()-1);
+                if(!list_keys.contains(key)) {
+                    idea idea = dataSnapshot.getValue(idea.class);
+                    idea.setKey(key);
+                    list.add(idea);
+                    list_keys.add(key);
+                    adapter.notifyItemInserted(list.size() - 1);
+                }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
                 String key = dataSnapshot.getKey();
-//                String content = dataSnapshot.child("content").getValue().toString();
-//                String time = dataSnapshot.child("time").getValue().toString();
-//                String project = dataSnapshot.child("project").getValue().toString();
-//                Integer upvotes = dataSnapshot.child("upvotes").getValue(Integer.class);
                 idea idea = dataSnapshot.getValue(idea.class);
                 idea.setKey(key);
-                //idea idea = new idea(content,time,project,upvotes,key);
                 int ideaIndex = list_keys.indexOf(key);
                 if (ideaIndex > -1) {
-                    // Replace with the new data
                     list.set(ideaIndex, idea);
-
-                    // Update the RecyclerView
                     adapter.notifyItemChanged(ideaIndex);
                 } else {
                     Log.w(TAG, "onChildChanged:unknown_child:" + key);
@@ -200,12 +190,6 @@ return view;
     public void onDeleteClick(int position) {
         if(list.get(position).getAuthor().equals(currentuser)) {
             databaseReference.child(list.get(position).getKey()).removeValue();
-            int ideaIndex = list_keys.indexOf(list.get(position).getKey());
-            list_keys.remove(ideaIndex);
-            list.remove(ideaIndex);
-
-            // Update the RecyclerView
-            adapter.notifyItemRemoved(ideaIndex);
         }
         else Toast.makeText(getActivity(),"You are not allowed to delete other's ideas",Toast.LENGTH_SHORT).show();
     }

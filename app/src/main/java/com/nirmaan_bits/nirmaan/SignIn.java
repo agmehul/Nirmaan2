@@ -73,6 +73,7 @@ public class SignIn extends AppCompatActivity {
 startActivity(new Intent(SignIn.this,MainActivity.class));
 
              }
+             else mGoogleBtn.setVisibility(View.VISIBLE);
              }
             };
 

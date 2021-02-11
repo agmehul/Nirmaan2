@@ -40,7 +40,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
        // holder.textViewName.setText(uploadCurrent.getName());
         Glide.with(mContext)
                 .load(uploadCurrent.getImageUrl())
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.ic_nirmaan_logo)
               // .fit()
                .centerCrop()
                 .into(holder.imageView);

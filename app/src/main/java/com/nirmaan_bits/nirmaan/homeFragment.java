@@ -87,6 +87,24 @@ public class homeFragment extends Fragment {
 
             }
         });}
+        if(currentuser.substring(0,9).matches("[A-Za-z0-9]+")){
+            databaseReference= FirebaseDatabase.getInstance().getReference().child("contactsMailIndexed").child(currentuser.substring(0,9));
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        if (snapshot.child("position").getValue() != null) {
+                            pl.setText(snapshot.child("position").getValue().toString());
+                        }
+                        greeting.setVisibility(View.GONE);
+                        if(project1.getText().equals("Guest"))project1.setVisibility(View.GONE);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });}
         ImageButton feed=homeview.findViewById(R.id.feedback);
 
         feed.setOnClickListener(new View.OnClickListener() {

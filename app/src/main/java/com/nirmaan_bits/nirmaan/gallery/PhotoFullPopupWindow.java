@@ -35,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nirmaan_bits.nirmaan.Constants;
 import com.nirmaan_bits.nirmaan.GlideApp;
+import com.nirmaan_bits.nirmaan.MainActivity;
 import com.nirmaan_bits.nirmaan.R;
 import com.nirmaan_bits.nirmaan.Service.MyFirebaseSrevice;
 import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
@@ -127,7 +128,7 @@ public class PhotoFullPopupWindow extends PopupWindow {
         delete = view.findViewById(R.id.delete);
         download = view.findViewById(R.id.download);
         //image_panel = view.findViewById(R.id.image_panel);
-        if(ProjectsFragment.project == MyFirebaseSrevice.userProp){
+        if(ProjectsFragment.project == MyFirebaseSrevice.userProp || (galleryFragment.project==0 && !MainActivity.project.equals("guest"))){
             delete.setVisibility(View.VISIBLE);
         }
 

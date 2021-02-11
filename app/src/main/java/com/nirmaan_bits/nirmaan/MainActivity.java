@@ -692,14 +692,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 MyFirebaseSrevice.userProp = 11;
                                 break;
                             default:
-                                MyFirebaseSrevice.userProp = 0;
+                                MyFirebaseSrevice.userProp = -1;
                                 break;
                         }
-
-                        project = project_firebase.toUpperCase();
+                        /*if(project_firebase.equals("gbcb"))
+                            project = "PKP";
+                        else*/
+                            project = project_firebase.toUpperCase();
                     }
                     else{
-                        MyFirebaseSrevice.userProp = 0;
+                        MyFirebaseSrevice.userProp = -1;
                         project = "guest";
                         if_pl = 0;
                     }
@@ -707,12 +709,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
         }
         else {
-            MyFirebaseSrevice.userProp = 0;
+            MyFirebaseSrevice.userProp = -1;
             project = "guest";
             if_pl = 0;
         }
@@ -776,6 +777,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.attendance:
                 Intent intent_docs=new Intent(MainActivity.this,com.nirmaan_bits.nirmaan.attendance.Mark_attendance_activity.class);
                 startActivity(intent_docs);
+                break;
+            case R.id.developers:
+                Intent intent_developers=new Intent(MainActivity.this,developers_activity.class);
+                startActivity(intent_developers);
                 break;
             case R.id.logout:
                 mAuth.signOut();

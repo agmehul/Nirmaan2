@@ -55,7 +55,7 @@ switch (ProjectsFragment.project){
         collapsingToolbarLayout.setTitle("Unnati 2");
         break;
     case 10:
-        collapsingToolbarLayout.setTitle("Youth");
+        collapsingToolbarLayout.setTitle("Youth Employment");
         break;
 
         default:break;
@@ -90,7 +90,7 @@ switch (ProjectsFragment.project){
             Intent i;
             switch (v.getId())  {
                 case R.id.utkarsh1 :
-                    i=new Intent(this,utkarsh_aim.class);
+                    i=new Intent(this,utkarsh_aims.class);
                     startActivity(i);
                     break;
                 case R.id.utkarsh2 :
@@ -108,7 +108,7 @@ switch (ProjectsFragment.project){
                     break;
 
                 case R.id.utkarsh5:
-                    i=new Intent(this,achievements.class);
+                    i=new Intent(this,utkarsh_achievements.class);
                     startActivity(i);
                     break;
                 case R.id.utkarsh6:

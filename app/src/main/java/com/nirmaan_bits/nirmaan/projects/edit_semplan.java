@@ -1,11 +1,16 @@
 package com.nirmaan_bits.nirmaan.projects;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,14 +20,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.nirmaan_bits.nirmaan.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class edit_semplan extends AppCompatActivity{
 DatabaseReference databaseReference;
-EditText plan,weight;
-Spinner complete;
+EditText plan;
 Button edit_semplan;
-String plan_text,complete_text,weight_text,key;
+TextView deadlineTV;
+ImageButton deadlineBt;
+private int mYear, mMonth, mDay;
+String plan_text,complete_text,deadline_text,key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,49 +75,50 @@ String plan_text,complete_text,weight_text,key;
         {
             plan_text = bundle.getString("plan");
             complete_text = bundle.getString("complete");
-            weight_text = bundle.getString("weight");
+            deadline_text = bundle.getString("weight");
             key =  bundle.getString("key");
-
-
-            //TODO here get the string stored in the string variable and do
-            // setText() on userName
         }
 
 
 plan = findViewById(R.id.content);
-weight = findViewById(R.id.edit_weight);
-complete = findViewById(R.id.edit_complete);
+deadlineTV = findViewById(R.id.deadlineTV);
+deadlineBt = findViewById(R.id.deadlineBt);
+
 edit_semplan = findViewById(R.id.edit_semplan);
 plan.setText(plan_text);
-weight.setText(weight_text);
-
-        // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
-        categories.add("no");
-        categories.add("yes");
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_semplan, categories);
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(R.layout.spinner_item_semplan);
-
-        // attaching data adapter to spinner
-        complete.setAdapter(dataAdapter);
-        if(complete_text.equals("yes")){
-            complete.setSelection(1);}
+deadlineTV.setText(deadline_text);
+deadlineBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
+                DatePickerDialog datePickerDialog = new DatePickerDialog(edit_semplan.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                deadlineTV.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                deadlineTV.setTextColor(Color.WHITE);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
 
         edit_semplan.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
       if(plan.getText().toString().equals(""))
           Toast.makeText(edit_semplan.this,"Enter plan", Toast.LENGTH_SHORT).show();
-       else if(weight.getText().toString().equals(""))
-            Toast.makeText(edit_semplan.this,"Enter weight", Toast.LENGTH_SHORT).show();
        else  {
-            semplan sp = new semplan(plan.getText().toString(),"",complete.getSelectedItem().toString(),weight.getText().toString());
+          semplan sp = new semplan(plan.getText().toString(),"",complete_text,deadlineTV.getText().toString());
         databaseReference.child(key).setValue(sp);
         Toast.makeText(edit_semplan.this,"Semplan edited successfully", Toast.LENGTH_SHORT).show();
         finish();}

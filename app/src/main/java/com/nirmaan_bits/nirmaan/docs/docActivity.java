@@ -47,6 +47,7 @@ import com.nirmaan_bits.nirmaan.projects.ProjectsFragment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,9 +240,14 @@ public class docActivity extends AppCompatActivity {
                     folderName.requestFocus();
                     return;
                 }
+                if (containsName(folderNameList,fName)) {
+                    folderName.setError("Folder with this name already exists!");
+                    folderName.requestFocus();
+                    return;
+                }
 
                 intent = new Intent();
-                intent.setType("application/pdf/*");
+                intent.setType("*/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(Intent.createChooser(intent, "Please choose a PDF File"), 101);
@@ -467,7 +473,13 @@ public class docActivity extends AppCompatActivity {
 
         return pdfName;
     }
-
-
+    public static boolean containsName(List<folder> c, String name) {
+        for(folder o : c) {
+            if(o != null && o.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

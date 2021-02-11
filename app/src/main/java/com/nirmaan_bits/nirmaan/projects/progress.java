@@ -35,6 +35,7 @@ public class progress extends AppCompatActivity {
     private  double prog=0;
     private ProgressBar progressBar;
     private TextView progno;
+    private int childCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,20 @@ public class progress extends AppCompatActivity {
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    childCount= (int) dataSnapshot.getChildrenCount();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
 
 
     }
@@ -112,12 +126,17 @@ public class progress extends AppCompatActivity {
 
                                 if(Objects.requireNonNull(dataSnapshot.child("complete").getValue()).toString().equals("yes")) {
                                     String mName = Objects.requireNonNull(dataSnapshot.child("plan").getValue()).toString();
-                                    double pt=Double.parseDouble(Objects.requireNonNull(dataSnapshot.child("weight").getValue()).toString());
+                                    double pt=100/childCount;
 
                                     holder.plan.setText(mName);
                                     holder.image.setVisibility(View.VISIBLE);
+                                    if(dataSnapshot.child("weight").getValue().toString().equals("No deadline")){
+                                        holder.deadline.setVisibility(View.GONE);
+                                        holder.deadline_label.setVisibility(View.GONE);
+                                    }
+                                    holder.deadline.setText(dataSnapshot.child("weight").getValue().toString());
 
-                                    prog+=pt*10;
+                                    prog+=pt;
 
                                     progressBar.setProgress((int) prog);
                                     String ab= Integer.toString((int) prog)+"%";
@@ -175,6 +194,7 @@ public class progress extends AppCompatActivity {
         ImageView image;
         CardView card;
         LinearLayout linearLayout;
+        TextView deadline,deadline_label;
 
         PlanViewHolder(@NonNull View itemView)
         {
@@ -183,6 +203,8 @@ public class progress extends AppCompatActivity {
             plan = itemView.findViewById(R.id.pretext);
             image=itemView.findViewById(R.id.edit_complete);
             card=itemView.findViewById(R.id.planCard);
+            deadline = itemView.findViewById(R.id.deadline);
+            deadline_label = itemView.findViewById(R.id.deadline_label);
         }
 
     }
